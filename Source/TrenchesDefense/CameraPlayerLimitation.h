@@ -23,9 +23,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LimitationCameraPlayer")
 	ACameraPlayer* CameraPlayer;
 
-	//*function for the event endOverlap
-	//UPROPERTY(BlueprintAssignable, Category="LimitationCameraPlayer")
-	//FActorEndOverlapSignature OnActorEndOverlap;
+
 
 
 
@@ -37,8 +35,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:/*
+private:
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	*/
+	
 };

@@ -19,19 +19,19 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
-			if (x <= 5) { //at left -> go right
+			if (x <= 50) { //at left -> go right
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->RightAxisMovement();
 			}
-			if (x >= ViewportSize.X-5) { //at right -> go left
+			if (x >= ViewportSize.X-50) { //at right -> go left
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->LeftAxisMovement();
 			}
-			if (y <= 5) { //at top -> go down
+			if (y <= 50) { //at top -> go down
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->DownAxisMovement();
 			}
-			if (y >= ViewportSize.Y - 5) { //at bottom -> go top
+			if (y >= ViewportSize.Y - 50) { //at bottom -> go top
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->TopAxisMovement();
 			}

@@ -9,6 +9,8 @@ ACameraPlayer::ACameraPlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//ajouter box collision => blockalldynamics? car la je le fais dans le BP
+
 }
 
 // Called when the game starts or when spawned

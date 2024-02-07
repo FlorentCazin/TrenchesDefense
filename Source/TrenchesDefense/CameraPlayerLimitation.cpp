@@ -18,7 +18,7 @@ ACameraPlayerLimitation::ACameraPlayerLimitation()
 	ZoneVolume->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f)); // You can adjust the scale as needed
 
 	// Bind event for when other actors overlap with this volume
-	//ZoneVolume->OnComponentBeginOverlap.AddDynamic(this, &ACameraPlayerLimitation::OnOverlapBegin);
+	ZoneVolume->OnComponentEndOverlap.AddDynamic(this, &ACameraPlayerLimitation::OnOverlapEnd);
 }
 
 // Called when the game starts or when spawned
@@ -37,12 +37,11 @@ void ACameraPlayerLimitation::Tick(float DeltaTime)
 
 }
 
-/*
+
 void ACameraPlayerLimitation::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 	if (OtherActor && OtherActor->IsA(ACameraPlayer::StaticClass())) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("ICI END OVERLAP CAMERA"));
 		ACameraPlayer* CameraPlayerTmp = Cast<ACameraPlayer>(OtherActor);
 		CameraPlayerTmp->SetActorLocation(CameraPlayerTmp->PreviousLocation);
 	}
 }
-*/
+
