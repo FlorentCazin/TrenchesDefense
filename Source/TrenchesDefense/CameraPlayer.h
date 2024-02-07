@@ -14,18 +14,11 @@ public:
 	// Sets default values for this pawn's properties
 	ACameraPlayer();
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="Camera")
-	AActor* RightLimit;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
-	AActor* LeftLimit;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
-	AActor* UpLimit;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
-	AActor* DownLimit;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
-	AActor* HeightLimit;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	int CameraSpeed;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	FVector PreviousLocation;
 
 	//la hauteur max de la camera c sa position de debut.
 	//on aura la possibilité de zoomer et tourner
