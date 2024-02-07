@@ -34,24 +34,24 @@ void ACameraPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ACameraPlayer::LeftAxisMovement() {
 	FVector locationCamera = GetActorLocation();
-	locationCamera.X -= CameraSpeed;
+	locationCamera.Y -= CameraSpeed;
 	SetActorLocation(locationCamera);
 }
 
 void ACameraPlayer::RightAxisMovement() {
 	FVector locationCamera = GetActorLocation();
-	locationCamera.X += CameraSpeed;
+	locationCamera.Y += CameraSpeed;
 	SetActorLocation(locationCamera);
 }
 
 void ACameraPlayer::TopAxisMovement() {
 	FVector locationCamera = GetActorLocation();
-	locationCamera.Y -= CameraSpeed;
+	locationCamera.X += CameraSpeed;
 	SetActorLocation(locationCamera);
 }
 
 void ACameraPlayer::DownAxisMovement() {
 	FVector locationCamera = GetActorLocation();
-	locationCamera.Y += CameraSpeed;
+	locationCamera.X -= CameraSpeed;
 	SetActorLocation(locationCamera);
 }
