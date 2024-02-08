@@ -3,19 +3,19 @@
 
 #include "CameraPlayerController.h"
 #include "GameFramework/PlayerController.h"
-#include "CameraPlayer.h"
 #include "Engine/World.h"
 
 
 void ACameraPlayerController::BeginPlay() {
 	bShowMouseCursor = true;
+	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
+
 	//CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 	//bEnableClickEvents = true;
 	//bEnableMouseOverEvents = true;
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
-	ACameraPlayer* CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 	float x, y;
 	if (GetMousePosition(x, y)) {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
