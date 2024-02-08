@@ -12,10 +12,10 @@ ACameraPlayerLimitation::ACameraPlayerLimitation()
 	ZoneVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("ZoneVolume"));
 	RootComponent = ZoneVolume;
 
-	// Set volume location, rotation, and scale as needed
+	// ZoneVolume configuration
 	ZoneVolume->SetRelativeLocation(FVector::ZeroVector);
 	ZoneVolume->SetRelativeRotation(FRotator::ZeroRotator);
-	ZoneVolume->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f)); // You can adjust the scale as needed
+	ZoneVolume->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 
 	// Bind event for when other actors overlap with this volume
 	ZoneVolume->OnComponentEndOverlap.AddDynamic(this, &ACameraPlayerLimitation::OnOverlapEnd);

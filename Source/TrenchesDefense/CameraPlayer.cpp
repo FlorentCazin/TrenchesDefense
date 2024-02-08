@@ -9,7 +9,11 @@ ACameraPlayer::ACameraPlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//ajouter box collision => blockalldynamics? car la je le fais dans le BP
+	//BoxCollision configuration
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CameraBoxCollision"));
+	BoxCollision->SetupAttachment(RootComponent);
+	BoxCollision->SetBoxExtent(FVector(50.f, 50.f, 50.f));
+	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
 }
 

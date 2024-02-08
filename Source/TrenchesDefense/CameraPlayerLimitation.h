@@ -23,10 +23,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LimitationCameraPlayer")
 	ACameraPlayer* CameraPlayer;
 
-
-
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

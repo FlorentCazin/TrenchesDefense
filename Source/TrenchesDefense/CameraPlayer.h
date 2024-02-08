@@ -3,6 +3,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Components/BoxComponent.h"
 #include "CameraPlayer.generated.h"
 
 UCLASS(Blueprintable)
@@ -19,6 +20,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	FVector PreviousLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UBoxComponent* BoxCollision;
 
 	//la hauteur max de la camera c sa position de debut.
 	//on aura la possibilité de zoomer et tourner
