@@ -10,7 +10,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ACameraPlayerController : public APlayerController
 {
 	GENERATED_BODY()
@@ -20,6 +20,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
 	bool RightClickPressed;
+
+	//Priority of the axe used
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
+	bool AxisXPriority;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
+	float PreviousMouseLocationX;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
+	float PreviousMouseLocationY;
 
 protected:
 	virtual void BeginPlay() override;

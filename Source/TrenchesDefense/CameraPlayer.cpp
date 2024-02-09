@@ -37,7 +37,7 @@ void ACameraPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-void ACameraPlayer::LeftAxisMovement() {
+void ACameraPlayer::LeftAxisMovement() { //Y
     //Creation of the axes needed transform vector using world coordinates
     FVector localDisplacementVector = FVector(0.f, CameraSpeed, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
@@ -46,7 +46,7 @@ void ACameraPlayer::LeftAxisMovement() {
 	SetActorLocation(GetActorLocation() + localOffset);
 }
 
-void ACameraPlayer::RightAxisMovement() {
+void ACameraPlayer::RightAxisMovement() { //-Y
     //Creation of the axes needed transform vector using world coordinates
     FVector localDisplacementVector = FVector(0.f, -CameraSpeed, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
@@ -55,7 +55,7 @@ void ACameraPlayer::RightAxisMovement() {
     SetActorLocation(GetActorLocation() + localOffset);
 }
 
-void ACameraPlayer::TopAxisMovement() {
+void ACameraPlayer::TopAxisMovement() { //-X
     //Creation of the axes needed transform vector using world coordinates
     FVector localDisplacementVector = FVector(-CameraSpeed, 0.f, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
@@ -64,7 +64,7 @@ void ACameraPlayer::TopAxisMovement() {
     SetActorLocation(GetActorLocation() + localOffset);
 }
 
-void ACameraPlayer::DownAxisMovement() {
+void ACameraPlayer::DownAxisMovement() { //X
     //Creation of the axes needed transform vector using world coordinates
     FVector localDisplacementVector = FVector(CameraSpeed, 0.f, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
@@ -79,3 +79,28 @@ void ACameraPlayer::DownAxisMovement() {
     locationCamera.X -= CameraSpeed;
     SetActorLocation(locationCamera);
 }*/
+
+//ROTATION: X=ROLL Y=PITCH Z=YAW
+
+void ACameraPlayer::LeftAxisRotation() { //X
+    FRotator localRotationVector = FRotator(1.f, 0.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}
+
+
+void ACameraPlayer::RightAxisRotation() { //-X
+    FRotator localRotationVector = FRotator( -1.f, 0.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}
+
+
+void ACameraPlayer::TopAxisRotation() { //Y
+    FRotator localRotationVector = FRotator(0.f, 1.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}
+
+
+void ACameraPlayer::DownAxisRotation() { //Y
+    FRotator localRotationVector = FRotator(0.f, -1.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}

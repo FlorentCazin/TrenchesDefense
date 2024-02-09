@@ -19,8 +19,23 @@ void ACameraPlayerController::BeginPlay() {
 void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
-		if (RightClickPressed) {
-			
+		if (RightClickPressed) { //verif que ca existe bien la valeur sinon non
+			//if (AxisXPriority) {
+				if (PreviousMouseLocationX < x) {
+					CameraPlayer->LeftAxisRotation();
+				}
+				if (PreviousMouseLocationX > x) {
+					CameraPlayer->RightAxisRotation();
+				}
+			//}
+			//else {
+				if (PreviousMouseLocationY < y) {
+					CameraPlayer->TopAxisRotation();
+				}
+				if (PreviousMouseLocationY > y) {
+					CameraPlayer->DownAxisRotation();
+				}
+			//}
 		}
 		else {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
@@ -41,5 +56,7 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 				CameraPlayer->TopAxisMovement();
 			}
 		}
+		PreviousMouseLocationX = x;
+		PreviousMouseLocationY = y;
 	}
 }

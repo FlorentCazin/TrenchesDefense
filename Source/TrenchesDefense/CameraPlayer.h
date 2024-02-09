@@ -51,4 +51,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DownAxisMovement();
 
+	UFUNCTION(BlueprintCallable)
+	void LeftAxisRotation();
+
+	UFUNCTION(BlueprintCallable)
+	void RightAxisRotation();
+
+	UFUNCTION(BlueprintCallable)
+	void TopAxisRotation();
+
+	UFUNCTION(BlueprintCallable)
+	void DownAxisRotation();
 };
