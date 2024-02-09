@@ -18,6 +18,9 @@ class TRENCHESDEFENSE_API ACameraPlayerController : public APlayerController
 public:
 	ACameraPlayer* CameraPlayer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
+	bool RightClickPressed;
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -9,6 +9,7 @@
 void ACameraPlayerController::BeginPlay() {
 	bShowMouseCursor = true;
 	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
+	RightClickPressed = false;
 
 	//CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 	//bEnableClickEvents = true;
@@ -18,12 +19,16 @@ void ACameraPlayerController::BeginPlay() {
 void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
+		if (RightClickPressed) {
+			
+		}
+		else {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
 			if (x <= 50) { //at left -> go right
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->RightAxisMovement();
 			}
-			if (x >= ViewportSize.X-50) { //at right -> go left
+			if (x >= ViewportSize.X - 50) { //at right -> go left
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->LeftAxisMovement();
 			}
@@ -35,5 +40,6 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->TopAxisMovement();
 			}
+		}
 	}
 }

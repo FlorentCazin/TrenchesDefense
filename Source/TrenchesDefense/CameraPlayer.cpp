@@ -38,25 +38,44 @@ void ACameraPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 void ACameraPlayer::LeftAxisMovement() {
-	FVector locationCamera = GetActorLocation();
-	locationCamera.Y -= CameraSpeed;
-	SetActorLocation(locationCamera);
+    //Creation of the axes needed transform vector using world coordinates
+    FVector localDisplacementVector = FVector(0.f, CameraSpeed, 0.f);
+    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
+    //apply this transform on the actor using world coordinates
+	SetActorLocation(GetActorLocation() + localOffset);
 }
 
 void ACameraPlayer::RightAxisMovement() {
-	FVector locationCamera = GetActorLocation();
-	locationCamera.Y += CameraSpeed;
-	SetActorLocation(locationCamera);
+    //Creation of the axes needed transform vector using world coordinates
+    FVector localDisplacementVector = FVector(0.f, -CameraSpeed, 0.f);
+    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
+    //apply this transform on the actor using world coordinates
+    SetActorLocation(GetActorLocation() + localOffset);
 }
 
 void ACameraPlayer::TopAxisMovement() {
-	FVector locationCamera = GetActorLocation();
-	locationCamera.X += CameraSpeed;
-	SetActorLocation(locationCamera);
+    //Creation of the axes needed transform vector using world coordinates
+    FVector localDisplacementVector = FVector(-CameraSpeed, 0.f, 0.f);
+    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
+    //apply this transform on the actor using world coordinates
+    SetActorLocation(GetActorLocation() + localOffset);
 }
 
 void ACameraPlayer::DownAxisMovement() {
-	FVector locationCamera = GetActorLocation();
-	locationCamera.X -= CameraSpeed;
-	SetActorLocation(locationCamera);
+    //Creation of the axes needed transform vector using world coordinates
+    FVector localDisplacementVector = FVector(CameraSpeed, 0.f, 0.f);
+    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
+    //apply this transform on the actor using world coordinates
+    SetActorLocation(GetActorLocation() + localOffset);
 }
+
+/* PROBLEME QUAND JUTILISE DIRECTEMENT WORLD LOCATION SI JE PIVOTE CA RESPECTE PLUS LAXE
+void ACameraPlayer::DownAxisMovement() {
+    FVector locationCamera = GetActorLocation();
+    locationCamera.X -= CameraSpeed;
+    SetActorLocation(locationCamera);
+}*/
