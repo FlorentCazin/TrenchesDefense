@@ -20,22 +20,26 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
 		if (RightClickPressed) { //verif que ca existe bien la valeur sinon non
-			//if (AxisXPriority) {
+			if (AxisXPriority) {
 				if (PreviousMouseLocationX < x) {
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
 					CameraPlayer->LeftAxisRotation();
 				}
 				if (PreviousMouseLocationX > x) {
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
 					CameraPlayer->RightAxisRotation();
 				}
-			//}
-			//else {
+			}
+			else {
 				if (PreviousMouseLocationY < y) {
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers haut"));
 					CameraPlayer->TopAxisRotation();
 				}
 				if (PreviousMouseLocationY > y) {
+					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers bas"));
 					CameraPlayer->DownAxisRotation();
 				}
-			//}
+			}
 		}
 		else {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen

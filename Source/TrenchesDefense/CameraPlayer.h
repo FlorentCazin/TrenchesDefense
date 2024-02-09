@@ -62,4 +62,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DownAxisRotation();
+
+	UFUNCTION(BlueprintCallable)
+	void Zoom();
+
+	UFUNCTION(BlueprintCallable)
+	void UnZoom();
 };

@@ -2,6 +2,8 @@
 
 
 #include "CameraPlayer.h"
+#include "GameFramework/Actor.h"
+
 
 // Sets default values
 ACameraPlayer::ACameraPlayer()
@@ -82,25 +84,42 @@ void ACameraPlayer::DownAxisMovement() {
 
 //ROTATION: X=ROLL Y=PITCH Z=YAW
 
-void ACameraPlayer::LeftAxisRotation() { //X
+void ACameraPlayer::LeftAxisRotation() { //-Y
+    FRotator localRotationVector = FRotator(0.f, -1.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}
+
+
+void ACameraPlayer::RightAxisRotation() { //Y
+    FRotator localRotationVector = FRotator( 0.f, 1.f, 0.f);
+    AddActorLocalRotation(localRotationVector);
+}
+
+
+void ACameraPlayer::TopAxisRotation() { //X
     FRotator localRotationVector = FRotator(1.f, 0.f, 0.f);
     AddActorLocalRotation(localRotationVector);
 }
 
 
-void ACameraPlayer::RightAxisRotation() { //-X
-    FRotator localRotationVector = FRotator( -1.f, 0.f, 0.f);
+void ACameraPlayer::DownAxisRotation() { //X
+    FRotator localRotationVector = FRotator(-1.f, 0.f, 0.f);
     AddActorLocalRotation(localRotationVector);
 }
 
 
-void ACameraPlayer::TopAxisRotation() { //Y
-    FRotator localRotationVector = FRotator(0.f, 1.f, 0.f);
-    AddActorLocalRotation(localRotationVector);
+void ACameraPlayer::Zoom() { 
+    FVector ZoomDirection = GetActorForwardVector(); 
+    float ZoomFactor = 0.1f;
+    // Increase the length of the vector to simulate zooming in
+    ZoomDirection *= (1.0f - ZoomFactor);
+    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeed);
 }
 
-
-void ACameraPlayer::DownAxisRotation() { //Y
-    FRotator localRotationVector = FRotator(0.f, -1.f, 0.f);
-    AddActorLocalRotation(localRotationVector);
+void ACameraPlayer::UnZoom() {
+    FVector ZoomDirection = GetActorForwardVector();
+    float ZoomFactor = 2.0f;
+    // Increase the length of the vector to simulate unzooming in
+    ZoomDirection *= (1.0f - ZoomFactor);
+    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeed);
 }
