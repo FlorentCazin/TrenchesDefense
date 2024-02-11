@@ -57,7 +57,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle1;
+	FTimerHandle TimerHandle2;
+	FTimerHandle TimerHandle3;
+	FTimerHandle TimerHandle4;
 
 public:	
 	// Called every frame

@@ -79,7 +79,7 @@ void ACameraPlayer::LeftAxisMovement() { //Y
 	SetActorLocation(GetActorLocation() + localOffset);
     // Delay before calling ReintialiseBooleanLimitationCamera
     float Delay = 0.2f; // Set the delay time in seconds
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraLeft, Delay, false);
+    GetWorldTimerManager().SetTimer(TimerHandle1, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraLeft, Delay, false);
 }
 
 void ACameraPlayer::RightAxisMovement() { //-Y
@@ -88,7 +88,7 @@ void ACameraPlayer::RightAxisMovement() { //-Y
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraRight, Delay, false);
+    GetWorldTimerManager().SetTimer(TimerHandle2, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraRight, Delay, false);
 }
 
 void ACameraPlayer::TopAxisMovement() { //-X
@@ -97,7 +97,7 @@ void ACameraPlayer::TopAxisMovement() { //-X
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraTop, Delay, false);
+    GetWorldTimerManager().SetTimer(TimerHandle3, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraTop, Delay, false);
 }
 
 void ACameraPlayer::DownAxisMovement() { //X
@@ -106,7 +106,7 @@ void ACameraPlayer::DownAxisMovement() { //X
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
-    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraBottom, Delay, false);
+    GetWorldTimerManager().SetTimer(TimerHandle4, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraBottom, Delay, false);
 }
 
 /* PROBLEME QUAND JUTILISE DIRECTEMENT WORLD LOCATION SI JE PIVOTE CA RESPECTE PLUS LAXE
