@@ -17,6 +17,16 @@ ACameraPlayer::ACameraPlayer()
 	BoxCollision->SetBoxExtent(FVector(50.f, 50.f, 50.f));
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
+    //For the limitation widget BP
+    CameraGoingLeft= false;
+    CameraGoingRight = false;
+    CameraGoingTop = false;
+    CameraGoingBottom = false;
+    LimitReachedTop = false;
+    LimitReachedBottom = false;
+    LimitReachedLeft = false;
+    LimitReachedRight = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -39,40 +49,64 @@ void ACameraPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-void ACameraPlayer::LeftAxisMovement() { //Y
-    //Creation of the axes needed transform vector using world coordinates
-    FVector localDisplacementVector = FVector(0.f, CameraSpeed, 0.f);
-    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
-    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
-    //apply this transform on the actor using world coordinates
-	SetActorLocation(GetActorLocation() + localOffset);
+void ACameraPlayer::DelayedReintialiseBooleanLimitationCameraTop(){
+    CameraGoingTop ? CameraGoingTop = false: CameraGoingTop;
+    LimitReachedTop ? LimitReachedTop = false : LimitReachedTop;
 }
 
-void ACameraPlayer::RightAxisMovement() { //-Y
+void ACameraPlayer::DelayedReintialiseBooleanLimitationCameraBottom() {
+    CameraGoingBottom ? CameraGoingBottom = false : CameraGoingBottom;
+    LimitReachedBottom ? LimitReachedBottom = false : LimitReachedBottom;
+}
+
+void ACameraPlayer::DelayedReintialiseBooleanLimitationCameraLeft() {
+    CameraGoingLeft ? CameraGoingLeft = false : CameraGoingLeft;
+    LimitReachedLeft ? LimitReachedLeft = false : LimitReachedLeft;
+}
+
+void ACameraPlayer::DelayedReintialiseBooleanLimitationCameraRight() {
+    CameraGoingRight ? CameraGoingRight = false : CameraGoingRight;
+    LimitReachedRight ? LimitReachedRight = false : LimitReachedRight;
+}
+
+void ACameraPlayer::LeftAxisMovement() { //Y
+    CameraGoingLeft = true;
     //Creation of the axes needed transform vector using world coordinates
     FVector localDisplacementVector = FVector(0.f, -CameraSpeed, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     //apply this transform on the actor using world coordinates
+	SetActorLocation(GetActorLocation() + localOffset);
+    // Delay before calling ReintialiseBooleanLimitationCamera
+    float Delay = 0.2f; // Set the delay time in seconds
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraLeft, Delay, false);
+}
+
+void ACameraPlayer::RightAxisMovement() { //-Y
+    CameraGoingRight = true;
+    FVector localDisplacementVector = FVector(0.f, CameraSpeed, 0.f);
+    FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
+    float Delay = 0.2f;
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraRight, Delay, false);
 }
 
 void ACameraPlayer::TopAxisMovement() { //-X
-    //Creation of the axes needed transform vector using world coordinates
-    FVector localDisplacementVector = FVector(-CameraSpeed, 0.f, 0.f);
-    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    CameraGoingTop = true;
+    FVector localDisplacementVector = FVector(CameraSpeed, 0.f, 0.f);
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
-    //apply this transform on the actor using world coordinates
     SetActorLocation(GetActorLocation() + localOffset);
+    float Delay = 0.2f;
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraTop, Delay, false);
 }
 
 void ACameraPlayer::DownAxisMovement() { //X
-    //Creation of the axes needed transform vector using world coordinates
-    FVector localDisplacementVector = FVector(CameraSpeed, 0.f, 0.f);
-    //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
+    CameraGoingBottom = true;
+    FVector localDisplacementVector = FVector(-CameraSpeed, 0.f, 0.f);
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
-    //apply this transform on the actor using world coordinates
     SetActorLocation(GetActorLocation() + localOffset);
+    float Delay = 0.2f;
+    GetWorldTimerManager().SetTimer(TimerHandle, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraBottom, Delay, false);
 }
 
 /* PROBLEME QUAND JUTILISE DIRECTEMENT WORLD LOCATION SI JE PIVOTE CA RESPECTE PLUS LAXE
@@ -83,7 +117,7 @@ void ACameraPlayer::DownAxisMovement() {
 }*/
 
 //ROTATION: X=ROLL Y=PITCH Z=YAW
-
+//right left => avant mettre en 90° en hauteur et faire la rotation puis remettre a la position initial en hauteur pour faire un mouvement correcte
 void ACameraPlayer::LeftAxisRotation() { //-Y
     FRotator localRotationVector = FRotator(0.f, -1.f, 0.f);
     AddActorLocalRotation(localRotationVector);

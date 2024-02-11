@@ -41,6 +41,10 @@ void ACameraPlayerLimitation::Tick(float DeltaTime)
 void ACameraPlayerLimitation::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 	if (OtherActor && OtherActor->IsA(ACameraPlayer::StaticClass())) {
 		ACameraPlayer* CameraPlayerTmp = Cast<ACameraPlayer>(OtherActor);
+		if (CameraPlayerTmp->CameraGoingLeft) CameraPlayerTmp->LimitReachedLeft = true;
+		if (CameraPlayerTmp->CameraGoingRight) CameraPlayerTmp->LimitReachedRight = true;
+		if (CameraPlayerTmp->CameraGoingTop) CameraPlayerTmp->LimitReachedTop = true;
+		if (CameraPlayerTmp->CameraGoingBottom) CameraPlayerTmp->LimitReachedBottom = true;
 		CameraPlayerTmp->SetActorLocation(CameraPlayerTmp->PreviousLocation);
 	}
 }

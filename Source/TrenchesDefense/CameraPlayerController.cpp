@@ -22,42 +22,43 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 		if (RightClickPressed) { //verif que ca existe bien la valeur sinon non
 			if (AxisXPriority) {
 				if (PreviousMouseLocationX < x) {
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
 					CameraPlayer->LeftAxisRotation();
 				}
 				if (PreviousMouseLocationX > x) {
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
 					CameraPlayer->RightAxisRotation();
 				}
 			}
 			else {
 				if (PreviousMouseLocationY < y) {
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers haut"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers haut"));
 					CameraPlayer->TopAxisRotation();
 				}
 				if (PreviousMouseLocationY > y) {
-					GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers bas"));
+					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers bas"));
 					CameraPlayer->DownAxisRotation();
 				}
 			}
 		}
 		else {
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
-			if (x <= 50) { //at left -> go right
+			if (x <= 50) { //at left
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
-				CameraPlayer->RightAxisMovement();
-			}
-			if (x >= ViewportSize.X - 50) { //at right -> go left
-				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
 				CameraPlayer->LeftAxisMovement();
 			}
-			if (y <= 50) { //at top -> go down
+			if (x >= ViewportSize.X - 50) { //at right
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
-				CameraPlayer->DownAxisMovement();
+				CameraPlayer ->RightAxisMovement();
 			}
-			if (y >= ViewportSize.Y - 50) { //at bottom -> go top
+			if (y <= 50) { //at top
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->TopAxisMovement();
+			}
+			if (y >= ViewportSize.Y - 50) { //at bottom
+				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
+				CameraPlayer->DownAxisMovement();
 			}
 		}
 		PreviousMouseLocationX = x;

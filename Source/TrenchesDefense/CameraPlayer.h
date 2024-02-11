@@ -24,6 +24,31 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	UBoxComponent* BoxCollision;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool CameraGoingLeft;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool CameraGoingRight;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool CameraGoingTop;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool CameraGoingBottom;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool LimitReachedTop;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool LimitReachedBottom;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool LimitReachedLeft;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
+	bool LimitReachedRight;
+
+
 	//la hauteur max de la camera c sa position de debut.
 	//on aura la possibilité de zoomer et tourner
 	//de se déplacer dans axe donné
@@ -31,6 +56,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	FTimerHandle TimerHandle;
 
 public:	
 	// Called every frame
@@ -68,4 +95,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UnZoom();
+
+	void DelayedReintialiseBooleanLimitationCameraTop();
+	void DelayedReintialiseBooleanLimitationCameraBottom();
+	void DelayedReintialiseBooleanLimitationCameraLeft();
+	void DelayedReintialiseBooleanLimitationCameraRight();
+
 };
