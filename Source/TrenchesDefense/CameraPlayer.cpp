@@ -117,16 +117,18 @@ void ACameraPlayer::DownAxisMovement() {
 }*/
 
 //ROTATION: X=ROLL Y=PITCH Z=YAW
-//right left => avant mettre en 90° en hauteur et faire la rotation puis remettre a la position initial en hauteur pour faire un mouvement correcte
+
 void ACameraPlayer::LeftAxisRotation() { //-Y
-    FRotator localRotationVector = FRotator(0.f, -1.f, 0.f);
-    AddActorLocalRotation(localRotationVector);
+    FRotator RotationLocal(0.f, -1.f, 0.f);
+    SetActorRotation(GetActorRotation() + RotationLocal);
+    
 }
 
 
 void ACameraPlayer::RightAxisRotation() { //Y
-    FRotator localRotationVector = FRotator( 0.f, 1.f, 0.f);
-    AddActorLocalRotation(localRotationVector);
+    FRotator RotationLocal(0.f, 1.f, 0.f);
+    SetActorRotation(GetActorRotation() + RotationLocal);
+    
 }
 
 
