@@ -17,7 +17,7 @@ void ACameraPlayerController::BeginPlay() {
 void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
-		if (RightClickPressed) { //Ratation movement
+		if (RightClickPressed) { //Ratation movement //ici faudra ajouter un boolean si on selectionne une unité ca devient le clique droit de rotation de lunité?
 			if (AxisXPriority) { //Left Right
 				if (PreviousMouseLocationX < x) {
 					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
