@@ -20,6 +20,9 @@ void ACameraPlayerController::BeginPlay() {
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
+	//Giving the possibility to add things in the BP eventtick
+	Super::Tick(DeltaSeconds);
+
 	float x, y;
 	if (GetMousePosition(x, y)) {
 		if (RightClickPressed) { //Ratation movement //ici faudra ajouter un boolean si on selectionne une unité ca devient le clique droit de rotation de lunité?
