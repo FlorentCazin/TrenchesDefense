@@ -18,7 +18,7 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 	float x, y;
 	if (GetMousePosition(x, y)) {
 		if (RightClickPressed) { //Ratation movement //ici faudra ajouter un boolean si on selectionne une unité ca devient le clique droit de rotation de lunité?
-			if (AxisXPriority) { //Left Right
+			//if (AxisXPriority) { //Left Right
 				if (PreviousMouseLocationX < x) {
 					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
 					CameraPlayer->LeftAxisRotation();
@@ -27,8 +27,8 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
 					CameraPlayer->RightAxisRotation();
 				}
-			}
-			else {
+			//}
+			//else {
 				if (PreviousMouseLocationY < y) { //Top Down
 					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers haut"));
 					CameraPlayer->TopAxisRotation();
@@ -37,7 +37,7 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers bas"));
 					CameraPlayer->DownAxisRotation();
 				}
-			}
+			//}
 		}
 		else { //Axis movement
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
