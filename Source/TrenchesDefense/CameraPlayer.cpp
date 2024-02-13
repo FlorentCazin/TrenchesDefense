@@ -27,6 +27,10 @@ ACameraPlayer::ACameraPlayer()
     LimitReachedLeft = false;
     LimitReachedRight = false;
 
+    //Speed
+    CameraSpeedMovement=1;
+    CameraSpeedRotation=1;
+
 }
 
 // Called when the game starts or when spawned
@@ -72,7 +76,7 @@ void ACameraPlayer::DelayedReintialiseBooleanLimitationCameraRight() {
 void ACameraPlayer::LeftAxisMovement() { //Y
     CameraGoingLeft = true;
     //Creation of the axes needed transform vector using world coordinates
-    FVector localDisplacementVector = FVector(0.f, -CameraSpeed, 0.f);
+    FVector localDisplacementVector = FVector(0.f, -CameraSpeedMovement, 0.f);
     //Transform this vector in local, and apply it for the local coordinates of the actor. Giving back the transformation applied in the world coordinates
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     //apply this transform on the actor using world coordinates
@@ -84,7 +88,7 @@ void ACameraPlayer::LeftAxisMovement() { //Y
 
 void ACameraPlayer::RightAxisMovement() { //-Y
     CameraGoingRight = true;
-    FVector localDisplacementVector = FVector(0.f, CameraSpeed, 0.f);
+    FVector localDisplacementVector = FVector(0.f, CameraSpeedMovement, 0.f);
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
@@ -93,7 +97,7 @@ void ACameraPlayer::RightAxisMovement() { //-Y
 
 void ACameraPlayer::TopAxisMovement() { //-X
     CameraGoingTop = true;
-    FVector localDisplacementVector = FVector(CameraSpeed, 0.f, 0.f);
+    FVector localDisplacementVector = FVector(CameraSpeedMovement, 0.f, 0.f);
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
@@ -102,7 +106,7 @@ void ACameraPlayer::TopAxisMovement() { //-X
 
 void ACameraPlayer::DownAxisMovement() { //X
     CameraGoingBottom = true;
-    FVector localDisplacementVector = FVector(-CameraSpeed, 0.f, 0.f);
+    FVector localDisplacementVector = FVector(-CameraSpeedMovement, 0.f, 0.f);
     FVector localOffset = GetActorTransform().TransformVectorNoScale(localDisplacementVector);
     SetActorLocation(GetActorLocation() + localOffset);
     float Delay = 0.2f;
@@ -119,27 +123,27 @@ void ACameraPlayer::DownAxisMovement() {
 //ROTATION: X=ROLL Y=PITCH Z=YAW
 
 void ACameraPlayer::LeftAxisRotation() { //-Y
-    FRotator RotationLocal(0.f, -1.f, 0.f);
+    FRotator RotationLocal(0.f, -CameraSpeedRotation, 0.f);
     SetActorRotation(GetActorRotation() + RotationLocal);
     
 }
 
 
 void ACameraPlayer::RightAxisRotation() { //Y
-    FRotator RotationLocal(0.f, 1.f, 0.f);
+    FRotator RotationLocal(0.f, CameraSpeedRotation, 0.f);
     SetActorRotation(GetActorRotation() + RotationLocal);
     
 }
 
 
 void ACameraPlayer::TopAxisRotation() { //X
-    FRotator localRotationVector = FRotator(1.f, 0.f, 0.f);
+    FRotator localRotationVector = FRotator(CameraSpeedRotation, 0.f, 0.f);
     AddActorLocalRotation(localRotationVector);
 }
 
 
 void ACameraPlayer::DownAxisRotation() { //X
-    FRotator localRotationVector = FRotator(-1.f, 0.f, 0.f);
+    FRotator localRotationVector = FRotator(-CameraSpeedRotation, 0.f, 0.f);
     AddActorLocalRotation(localRotationVector);
 }
 
@@ -149,7 +153,7 @@ void ACameraPlayer::Zoom() {
     float ZoomFactor = 0.1f;
     // Increase the length of the vector to simulate zooming in
     ZoomDirection *= (1.0f - ZoomFactor);
-    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeed);
+    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeedMovement);
 }
 
 void ACameraPlayer::UnZoom() {
@@ -157,5 +161,5 @@ void ACameraPlayer::UnZoom() {
     float ZoomFactor = 2.0f;
     // Increase the length of the vector to simulate unzooming in
     ZoomDirection *= (1.0f - ZoomFactor);
-    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeed);
+    SetActorLocation(GetActorLocation() + ZoomDirection * CameraSpeedMovement);
 }

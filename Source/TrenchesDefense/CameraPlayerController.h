@@ -16,6 +16,8 @@ class TRENCHESDEFENSE_API ACameraPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	ACameraPlayerController();
+
 	ACameraPlayer* CameraPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
@@ -30,6 +32,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
 	float PreviousMouseLocationY;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
+	int ScreenBorderLimitationForCameraLocation;
 
 protected:
 	virtual void BeginPlay() override;

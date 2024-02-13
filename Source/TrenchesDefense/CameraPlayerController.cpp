@@ -5,13 +5,18 @@
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
 
-
-void ACameraPlayerController::BeginPlay() {
+ACameraPlayerController::ACameraPlayerController(){
+	PrimaryActorTick.bCanEverTick = true;
 	bShowMouseCursor = true;
-	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 	RightClickPressed = false;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
+	ScreenBorderLimitationForCameraLocation = 50;
+}
+
+
+void ACameraPlayerController::BeginPlay() {
+	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
@@ -41,19 +46,19 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 		}
 		else { //Axis movement
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
-			if (x <= 50) { //at left
+			if (x <= ScreenBorderLimitationForCameraLocation) { //at left
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->LeftAxisMovement();
 			}
-			if (x >= ViewportSize.X - 50) { //at right
+			if (x >= ViewportSize.X - ScreenBorderLimitationForCameraLocation) { //at right
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer ->RightAxisMovement();
 			}
-			if (y <= 50) { //at top
+			if (y <= ScreenBorderLimitationForCameraLocation) { //at top
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->TopAxisMovement();
 			}
-			if (y >= ViewportSize.Y - 50) { //at bottom
+			if (y >= ViewportSize.Y - ScreenBorderLimitationForCameraLocation) { //at bottom
 				CameraPlayer->PreviousLocation = CameraPlayer->GetActorLocation();
 				CameraPlayer->DownAxisMovement();
 			}

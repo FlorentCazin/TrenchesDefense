@@ -16,9 +16,6 @@ public:
 	ACameraPlayer();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
-	int CameraSpeed;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	FVector PreviousLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -47,6 +44,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Camera")
 	bool LimitReachedRight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
+	float CameraSpeedMovement;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
+	float CameraSpeedRotation;
 
 
 	//la hauteur max de la camera c sa position de debut.
