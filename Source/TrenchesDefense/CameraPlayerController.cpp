@@ -16,11 +16,14 @@ ACameraPlayerController::ACameraPlayerController(){
 
 
 void ACameraPlayerController::BeginPlay() {
+	//Allow BeginPlay BP
+	Super::BeginPlay();
+
 	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
-	//Giving the possibility to add things in the BP eventtick
+	//Allow EventTick BP
 	Super::Tick(DeltaSeconds);
 
 	float x, y;
