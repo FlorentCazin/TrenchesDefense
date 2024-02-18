@@ -17,6 +17,7 @@ public:
 	// Sets default values for this component's properties
 	ULifeComponent();
 
+	//MaxLife
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LifeProperties")
 	int LifeInitialization;
 

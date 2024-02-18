@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "CharacterDataAsset.h"
 #include "LifeComponent.h"
+#include "SoldierDataAsset.h"
 #include "TrenchesDefenseCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -20,11 +21,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
 	UCharacterDataAsset *CharacterDataAsset;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
-	TSubclassOf<ULifeComponent> LifeComponent;
+	UPROPERTY(BlueprintReadOnly, Category = "CharacterProperties")
+	ULifeComponent *LifeComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierProperties")
+	USoldierDataAsset* SoldierDataAsset;
 
 	UPROPERTY(BlueprintReadOnly, Category = "CharacterProperties")
 	bool IsDead;
+
+	UPROPERTY(BlueprintReadOnly, Category = "CharacterProperties")
+	int MaxLife;
 
 protected:
 	// Called when the game starts or when spawned

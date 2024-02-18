@@ -17,8 +17,8 @@ class TRENCHESDEFENSE_API ASoldierCharacter : public ATrenchesDefenseCharacter
 
 public:
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="SoldierProperties")
-	USoldierDataAsset *SoldierDataAsset;
+	//UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="SoldierProperties")
+	//USoldierDataAsset *SoldierDataAsset;
 
 public:
 
