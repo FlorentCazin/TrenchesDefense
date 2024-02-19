@@ -3,6 +3,7 @@
 
 #include "CameraPlayerController.h"
 #include "GameFramework/PlayerController.h"
+#include "ItemRepresentationInWorld.h"
 #include "Engine/World.h"
 
 ACameraPlayerController::ACameraPlayerController(){
@@ -73,4 +74,29 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 		PreviousMouseLocationX = x;
 		PreviousMouseLocationY = y;
 	}
+}
+
+bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLocation) {
+	//If the player is not already using the spawing/edit functionality and the HitActor is a AItemRepresentationInWorld
+	if (!AlreadySelectingSoldier && !BlockSpawnSoldier && ActorHited && ActorHited->IsA(AItemRepresentationInWorld::StaticClass())) {
+		try{ //try here is useless like we check if IsA(AItemRepresentationInWorld), but it's to have an idea of how LOG and exception could be used.
+			AItemRepresentationInWorld *soldierItemRepresentation = Cast<AItemRepresentationInWorld>(ActorHited);
+			if (soldierItemRepresentation) { //Cast is correct
+				SoldierToSpawn = soldierItemRepresentation->SpawnSoldier(ItemRepresentationLocation);
+				if (SoldierToSpawn) {
+					AlreadySelectingSoldier = true;
+					BlockSpawnSoldier = true;
+					return true;
+				}
+			}
+			else {
+				//Error during the cast
+				UE_LOG(LogTemp, Log, TEXT("Cast to ItemRepresentationInWorld problem"));
+			}
+		}
+		catch (const std::exception& e){ //Exception throwed
+			UE_LOG(LogTemp, Log, TEXT("Exception: %s"), *FString(e.what()));
+		}
+	}
+	return false;
 }

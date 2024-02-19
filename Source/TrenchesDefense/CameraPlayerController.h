@@ -69,7 +69,7 @@ public:
 
 	//Saving the soldier created or to edit
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
-	TSubclassOf<ATrenchesDefenseCharacter> SoldierToSpawn; //OU UTILISER ICI JUSTE ATRENCHESDEFENSECHARACTER pointeur et verifier avec un cast etc avant dans le code anyway? car pas pointeur donc probleme pour modifier value?
+	ATrenchesDefenseCharacter *SoldierToSpawn; //OU UTILISER ICI JUSTE ATRENCHESDEFENSECHARACTER pointeur et verifier avec un cast etc avant dans le code anyway? car pas pointeur donc probleme pour modifier value?
 
 	//Saving for each hit the actor hited
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
@@ -108,8 +108,8 @@ public:
 	//TArray<FHitResult> TickGetMultiLineTraceByChannel();
 
 	//Function used to spawn a soldier when clicking on is item representation. Taking a vector of the hit location, returning a boolean if we click or not on the item representation
-	//UFUNCTION(BlueprintCallable)
-	//bool OnClickSpawnSoldier(FVector ItemRepresentationLocation);
+	UFUNCTION(BlueprintCallable)
+	bool OnClickSpawnSoldier(FVector ItemRepresentationLocation);
 
 	//Function used to get/init the final choise of the player for the soldier's location. Taking the location of the floor where to spawn the actor gived by the mouse's click
 	//UFUNCTION(BlueprintCallable)
