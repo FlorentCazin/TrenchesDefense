@@ -104,8 +104,8 @@ public:
 	TArray<FHitResult> OnClickGetMultiLineTraceByChannel();
 
 	//Function to create a multi trace line by channel exclusivly during the EventTick used for spawning soldier system, return an array of HitResult
-	//UFUNCTION(BlueprintCallable)
-	//TArray<FHitResult> TickGetMultiLineTraceByChannel();
+	UFUNCTION(BlueprintCallable)
+	TArray<FHitResult> TickGetMultiLineTraceByChannel();
 
 	//Function used to spawn a soldier when clicking on is item representation. Taking a vector of the hit location, returning a boolean if we click or not on the item representation
 	UFUNCTION(BlueprintCallable)

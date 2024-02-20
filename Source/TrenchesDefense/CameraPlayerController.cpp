@@ -227,3 +227,31 @@ TArray<FHitResult> ACameraPlayerController::OnClickGetMultiLineTraceByChannel() 
 	}
 }
 
+TArray<FHitResult> ACameraPlayerController::TickGetMultiLineTraceByChannel() {
+	UWorld* World = GetWorld(); //world reference
+	TArray<FHitResult> multiHits;
+	if (World) {
+		AActor* ignoredActor = UGameplayStatics::GetActorOfClass(World, ATrenchesDefenseCharacter::StaticClass());
+		TArray<AActor*> ignoreActors = { ignoredActor };
+		FVector startLocation = GetPawn()->GetActorLocation();
+		FVector2D mousePosition;
+		GetMousePosition(mousePosition.X, mousePosition.Y);
+		FVector WorldPosition, WorldDirection;
+		DeprojectScreenPositionToWorld(mousePosition.X, mousePosition.Y, WorldPosition, WorldDirection);
+		FVector endLocation = WorldPosition + (WorldDirection * 10000.f);
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActors(ignoreActors);
+		World->LineTraceMultiByChannel(
+			multiHits,
+			startLocation,
+			endLocation,
+			ECC_Visibility,
+			CollisionParams
+		);
+		return multiHits;
+	}
+	else {
+		UE_LOG(LogTemp, Log, TEXT("GetWorld problem!"));
+		return multiHits;
+	}
+}
