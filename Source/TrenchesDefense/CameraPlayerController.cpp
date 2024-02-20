@@ -255,3 +255,35 @@ TArray<FHitResult> ACameraPlayerController::TickGetMultiLineTraceByChannel() {
 		return multiHits;
 	}
 }
+
+void ACameraPlayerController::OnLeftClick() {
+	TArray<FHitResult> HitResult = OnClickGetMultiLineTraceByChannel();
+	for (auto& Hit : HitResult) {
+		ActorHited = Hit.GetActor();
+		FVector HitLocation = Hit.ImpactPoint; //impact location
+		if (!OnClickSpawnSoldier(HitLocation)) {
+			if (!OnClickSoldierToMove()) {
+				OnClickInitFinalActorLocation(HitLocation);
+			}
+		}
+	}
+	if (ClickSpawningSoldierIsInLimitation && !SoldierIsPlaced) {
+		OnClickSetFinalActorLocation();
+		//change color to default to do
+	}
+	else {
+		if (SoldierIsPlaced) {
+			//change emissive to default
+			AlreadySelectingSoldier = false;
+			SoldierIsPlaced = false;
+			ClickSpawningSoldierIsInLimitation = false;
+
+			//spawn at SoldierDefaultSpawn actor location
+			UWorld* World = GetWorld(); //world reference
+			AActor* spawnActor = UGameplayStatics::GetActorOfClass(World,ASoldierDefaultSpawn::StaticClass());
+			SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
+			spawnActor->SetActorLocation(SaveSpawnActorValue);
+			//AI TO DO
+		}
+	}
+}

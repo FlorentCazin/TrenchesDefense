@@ -97,6 +97,9 @@ protected:
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+	UFUNCTION(BlueprintCallable)
+	void OnLeftClick();
+
 	//Spawning soldier variables
 
 	//Function to create a multi trace line by channel exclusivly for OnClick spawning soldier system, return an array of HitResult
