@@ -4,6 +4,12 @@
 #include "CameraPlayerController.h"
 #include "GameFramework/PlayerController.h"
 #include "ItemRepresentationInWorld.h"
+#include "TrenchesDefenseCharacter.h"
+#include "Kismet/GameplayStatics.h"
+#include "SoldierDefaultSpawn.h"
+#include "LimitationSoldiersSpawningZone.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "CameraPlayerLimitation.h"
 #include "Engine/World.h"
 
 ACameraPlayerController::ACameraPlayerController(){
@@ -100,3 +106,124 @@ bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLoca
 	}
 	return false;
 }
+
+
+bool ACameraPlayerController::OnClickSoldierToMove() {
+	//If we click on a soldier already placed
+	if (!AlreadySelectingSoldier && !BlockSpawnSoldier && ActorHited && ActorHited->IsA(ATrenchesDefenseCharacter::StaticClass())) {
+		UWorld* World = GetWorld(); //world reference
+		if (World) {
+			SoldierToSpawn = Cast<ATrenchesDefenseCharacter>(ActorHited);
+			if (SoldierToSpawn) {
+				//Get the SoldierDefaultSpawn object in the world
+				AActor* SoldierDefaultSpawnZone = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
+				if (SoldierDefaultSpawnZone) {
+					//Set from where the soldier will start to move
+					SaveSpawnActorValue = SoldierDefaultSpawnZone->GetActorLocation();
+					SoldierDefaultSpawnZone->SetActorLocation(SoldierToSpawn->GetActorLocation());
+					AlreadySelectingSoldier = true;
+					BlockSpawnSoldier = true;
+					return true;
+				}
+				else {
+					UE_LOG(LogTemp, Log, TEXT("Cannot retrieve SoldierDefaultSpawnZone from the world"));
+				}
+			}
+			else {
+				UE_LOG(LogTemp, Log, TEXT("Cast to ATrenchesDefenseCharacter problem"));
+			}
+		}
+	}
+	return false;
+}
+
+
+void ACameraPlayerController::OnClickInitFinalActorLocation(FVector ActorLocation) {
+	//If the player already selectionning a soldier and the click is inside the LimitationSoldiersSpawningZone
+	if (AlreadySelectingSoldier && ActorHited && ActorHited->IsA(ALimitationSoldiersSpawningZone::StaticClass())) {
+		//Multi line, so multiple hits, we know that we can hit 2 things, the soldier box limitation zone or the floor, here we check if we have hited before the floor the box limitation
+		ClickSpawningSoldierIsInLimitation = true;
+	}
+	else { //If it's not the box limitation, it's maybe the location to spawn the soldier
+		if (ClickSpawningSoldierIsInLimitation && !SoldierIsPlaced) { //If we hit previously the box limitation, and the soldier is not already placed (in previsualization) to limit the access of this system
+			//set the final location of the soldier
+			SpawningSoldierLocation = ActorLocation;
+		}
+		else {
+			if (AlreadySelectingSoldier && !SoldierIsPlaced) {
+				//WIDGET TO SHOW OUT OF LIMITATION
+			}
+			//else simple click
+		}
+	}
+}
+
+void ACameraPlayerController::OnClickSetFinalActorLocation() {
+	SoldierToSpawn->SetActorLocation(SpawningSoldierLocation); //optionnal, event tick doing it too
+	SoldierIsPlaced = true;
+	OverlapSoldierIsInLimitation = false;
+}
+
+
+void ACameraPlayerController::TickSetRotationFollowingCursor(FVector CursorWorldLocation) {
+	//Look at the cursor and apply the rotation for the soldier forward vector is looking the world cursor location
+	SoldierSavedZRotation = UKismetMathLibrary::FindLookAtRotation(SoldierToSpawn->GetActorForwardVector(), CursorWorldLocation - SoldierToSpawn->GetActorLocation()).Yaw;
+	SoldierToSpawn->SetActorRotation(FQuat(FRotator(0.f,0.f,SoldierSavedZRotation)));
+}
+
+
+void ACameraPlayerController::TickMoveActorForPrevisualizationDuringOverlap(FVector CursorWorldLocation) {
+	if (AlreadySelectingSoldier && !SoldierIsPlaced) { //If the player is already selecting a soldier but in Previsualization step (not placed yet)
+		if (SoldierToSpawn) {
+			FVector newLocation = CursorWorldLocation + FVector(0.f, 0.f, 90); //+90 on Z (Yaw) to fit perfectly with the floor
+			SoldierToSpawn->SetActorLocation(newLocation);
+		}
+		else {
+			UE_LOG(LogTemp, Log, TEXT("SoldierToSpawn is not valid!"))
+			ProblemSpawningActorResetValues(); //refund the player, reset values
+		}
+	}
+}
+
+void ACameraPlayerController::ProblemSpawningActorResetValues() {
+	ClickSpawningSoldierIsInLimitation = false;
+	AlreadySelectingSoldier = false;
+	OverlapSoldierIsInLimitation = false;
+	SoldierIsPlaced = false;
+	BlockSpawnSoldier = false;
+	if (SoldierToSpawn) {
+		SoldierToSpawn->Destroy();
+	}
+	//Call widget refund player?
+	UE_LOG(LogTemp, Log, TEXT("Fail, destroying actor, reset values, refund Player!"))
+}
+
+TArray<FHitResult> ACameraPlayerController::OnClickGetMultiLineTraceByChannel() {
+	UWorld* World = GetWorld(); //world reference
+	TArray<FHitResult> multiHits;
+	if (World) {
+		AActor* ignoredActor = UGameplayStatics::GetActorOfClass(World, ACameraPlayerLimitation::StaticClass());
+		TArray<AActor*> ignoreActors = { ignoredActor };
+		FVector startLocation = GetPawn()->GetActorLocation();
+		FVector2D mousePosition;
+		GetMousePosition(mousePosition.X, mousePosition.Y);
+		FVector WorldPosition, WorldDirection;
+		DeprojectScreenPositionToWorld(mousePosition.X,mousePosition.Y,WorldPosition,WorldDirection);
+		FVector endLocation=WorldPosition + (WorldDirection*10000.f);
+		FCollisionQueryParams CollisionParams;
+		CollisionParams.AddIgnoredActors(ignoreActors);
+		World->LineTraceMultiByChannel(
+			multiHits,
+			startLocation,
+			endLocation,
+			ECC_Visibility,
+			CollisionParams
+		);
+		return multiHits;
+	}
+	else {
+		UE_LOG(LogTemp, Log, TEXT("GetWorld problem!"));
+		return multiHits;
+	}
+}
+

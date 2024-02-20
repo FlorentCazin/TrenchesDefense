@@ -27,6 +27,7 @@ void AItemRepresentationInWorld::Tick(float DeltaTime)
 
 ATrenchesDefenseCharacter* AItemRepresentationInWorld::SpawnSoldier(FVector CursorHitLocation) {
 	if (SoldierClass) {
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("SoldierClass exist!"));
 		//FActorSpawnParameters SpawnParams;
 		return GetWorld()->SpawnActor<ATrenchesDefenseCharacter>(SoldierClass, CursorHitLocation, FRotator::ZeroRotator);
 	}

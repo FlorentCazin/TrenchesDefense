@@ -100,8 +100,8 @@ public:
 	//Spawning soldier variables
 
 	//Function to create a multi trace line by channel exclusivly for OnClick spawning soldier system, return an array of HitResult
-	//UFUNCTION(BlueprintCallable)
-	//TArray<FHitResult> OnClickGetMultiLineTraceByChannel();
+	UFUNCTION(BlueprintCallable)
+	TArray<FHitResult> OnClickGetMultiLineTraceByChannel();
 
 	//Function to create a multi trace line by channel exclusivly during the EventTick used for spawning soldier system, return an array of HitResult
 	//UFUNCTION(BlueprintCallable)
@@ -112,28 +112,28 @@ public:
 	bool OnClickSpawnSoldier(FVector ItemRepresentationLocation);
 
 	//Function used to get/init the final choise of the player for the soldier's location. Taking the location of the floor where to spawn the actor gived by the mouse's click
-	//UFUNCTION(BlueprintCallable)
-	//void OnClickInitFinalActorLocation(FVector ActorLocation);
+	UFUNCTION(BlueprintCallable)
+	void OnClickInitFinalActorLocation(FVector ActorLocation);
 
 	//Function Used to place the soldier using the location saved in the OnClickInitFinalActorLocation function to go to the next step => rotation
-	//UFUNCTION(BlueprintCallable)
-	//void OnClickSetFinalActorLocation();
+	UFUNCTION(BlueprintCallable)
+	void OnClickSetFinalActorLocation();
 
-	//Function used to set and save for each tick still the final click the rotation on Z of the actor using the mouse's cursor
-	//UFUNCTION(BlueprintCallable)
-	//void TickSetRotationFollowingCursor();
+	//Function used to set and save for each tick still the final click the rotation on Z of the actor using the mouse's cursor, taking CursorWorldLocation, the vector representing the world mouse location
+	UFUNCTION(BlueprintCallable)
+	void TickSetRotationFollowingCursor(FVector CursorWorldLocation);
 
 	//Function used to moove the selectionned actor and make him following the mouse's cursor during the previsualization step (overlap). Taking FVector as parameter representing the cursor's location in the world
-	//UFUNCTION(BlueprintCallable)
-	//void TickMoveActorForPrevisualizationDuringOverlap(FVector CursorWorldLocation);
+	UFUNCTION(BlueprintCallable)
+	void TickMoveActorForPrevisualizationDuringOverlap(FVector CursorWorldLocation);
 
 	//Function used if a problem happens during the spawning/edit system. Removing the actor, refund the player and reset variables
-	//UFUNCTION(BlueprintCallable)
-	//void ProblemSpawningActorResetValues();
+	UFUNCTION(BlueprintCallable)
+	void ProblemSpawningActorResetValues();
 
 	//Function used when the player click on a soldier already spawned, to change is location/rotation. Return a boolean if this is the case (false if he's not clicking on a soldier)
-	//UFUNCTION(BlueprintCallable)
-	//bool OnClickSoldierToMove();
+	UFUNCTION(BlueprintCallable)
+	bool OnClickSoldierToMove();
 
 	//Function used when the player click in a specific touch gived in BP, to rollback is action. IN PROGRESS
 	//UFUNCTION(BlueprintCallable)
