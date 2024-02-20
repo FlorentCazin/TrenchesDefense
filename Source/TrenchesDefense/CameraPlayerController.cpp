@@ -168,7 +168,7 @@ void ACameraPlayerController::OnClickSetFinalActorLocation() {
 void ACameraPlayerController::TickSetRotationFollowingCursor(FVector CursorWorldLocation) {
 	//Look at the cursor and apply the rotation for the soldier forward vector is looking the world cursor location
 	SoldierSavedZRotation = UKismetMathLibrary::FindLookAtRotation(SoldierToSpawn->GetActorForwardVector(), CursorWorldLocation - SoldierToSpawn->GetActorLocation()).Yaw;
-	SoldierToSpawn->SetActorRotation(FQuat(FRotator(0.f,0.f,SoldierSavedZRotation)));
+	SoldierToSpawn->SetActorRotation(FQuat(FRotator(0.f,SoldierSavedZRotation,0.f)));
 }
 
 
