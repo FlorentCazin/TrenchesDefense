@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "GameFramework/HUD.h"
 #include "CameraPlayerHUD.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TRENCHESDEFENSE_API UCameraPlayerHUD : public UUserWidget
+class TRENCHESDEFENSE_API ACameraPlayerHUD : public AHUD
 {
 	GENERATED_BODY()
 	
