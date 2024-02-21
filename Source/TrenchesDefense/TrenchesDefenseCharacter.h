@@ -44,15 +44,4 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//return true if success
-	UFUNCTION(BlueprintCallable)
-	virtual bool Attack(TArray<ATrenchesDefenseCharacter*> targets);
-
-	//return true if success
-	UFUNCTION(BlueprintCallable)
-	bool GoTo(FVector TargetLocation);
-
-	UFUNCTION(BlueprintCallable)
-	void Die();
-
 };

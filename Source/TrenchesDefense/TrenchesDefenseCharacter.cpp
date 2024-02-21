@@ -32,14 +32,4 @@ void ATrenchesDefenseCharacter::SetupPlayerInputComponent(UInputComponent* Playe
 	//LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
 }
 
-bool ATrenchesDefenseCharacter::Attack(TArray<ATrenchesDefenseCharacter*> Targets) {
-	return false;
-}
 
-bool ATrenchesDefenseCharacter::GoTo(FVector TargetLocation) {
-	return false;
-}
-
-void ATrenchesDefenseCharacter::Die() {
-	IsDead = true;
-}

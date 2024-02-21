@@ -59,7 +59,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
 	bool BlockSpawnSoldier;
 
-	//Spawn the soldier at the soldier's item representation location or the soldier is last location (depend of the cases)
+	//Spawn the soldier at the soldier's item representation location or the soldier is last location (depend of the step executed)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
 	FVector SpawningSoldierLocation;
 
