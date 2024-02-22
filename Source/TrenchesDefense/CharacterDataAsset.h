@@ -30,6 +30,9 @@ public:
 	float MaxDistanceVision;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
+	float DegreeOfVision;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
 	float AttackSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")

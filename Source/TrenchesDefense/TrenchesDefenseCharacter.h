@@ -18,6 +18,28 @@ public:
 	// Sets default values for this character's properties
 	ATrenchesDefenseCharacter();
 
+	USkeletalMeshComponent* CharacterMesh;
+
+	//Index of the material to change his color
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category="MaterialCharacterProperties")
+	int IndexMaterialToChange;
+
+	//Max emissive color value for the spawning/select system
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "MaterialCharacterProperties")
+	float MaxEmissiveColor;
+
+	//Color of the character where's outside the spawning limitation
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "MaterialCharacterProperties")
+	FLinearColor ColorOutOfLimitation;
+
+	//Color of the character where's inside the spawning limitation
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "MaterialCharacterProperties")
+	FLinearColor ColorInsideLimitation;
+
+	//Default color of the character
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "MaterialCharacterProperties")
+	FLinearColor DefaultColor;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
 	UCharacterDataAsset *CharacterDataAsset;
 
@@ -43,5 +65,11 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void ChangeSoldierColor(FLinearColor color);
+
+	void ChangeSoldierEmissive(float emissive);
+
+
 
 };

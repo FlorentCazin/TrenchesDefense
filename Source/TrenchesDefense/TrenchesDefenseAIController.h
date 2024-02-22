@@ -16,8 +16,6 @@ class TRENCHESDEFENSE_API ATrenchesDefenseAIController : public AAIController
 
 public:
 
-	bool MoveSuccess;
-
 	FRotator FinalRotationSpawningSystem;
 	
 public:

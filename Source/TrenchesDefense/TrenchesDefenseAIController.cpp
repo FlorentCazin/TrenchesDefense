@@ -25,15 +25,12 @@ void ATrenchesDefenseAIController::OnMoveCompleted(FAIRequestID RequestID, EPath
 }
 
 bool ATrenchesDefenseAIController::OnSuccess() {
-	MoveSuccess = true;
 	GetPawn()->SetActorRotation(FQuat(FinalRotationSpawningSystem));
 	return true;
 }
 
 bool ATrenchesDefenseAIController::OnFail() {
-
 	//UE_LOG(LogTemp, Log, TEXT("AIMoveTo Fail"))
-	MoveSuccess = false;
 	return false;
 }
 

@@ -11,6 +11,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "CameraPlayerLimitation.h"
 #include "Engine/World.h"
+#include "DrawDebugHelpers.h"
 #include "TrenchesDefenseAIController.h"
 
 ACameraPlayerController::ACameraPlayerController(){
@@ -20,6 +21,7 @@ ACameraPlayerController::ACameraPlayerController(){
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
 	ScreenBorderLimitationForCameraLocation = 50;
+	DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL = 2;
 }
 
 
@@ -98,12 +100,14 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 				if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
 					if (!OverlapSoldierIsInLimitation) { //if not already, avoid doing useless actions if it's already done
 						OverlapSoldierIsInLimitation = true;
-						//change color to green
+						//inside color
+						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorInsideLimitation);
 					}
 				}
 				else { //if the player is out of the soldier box spawning limitation
 					if (NumberOfHitedElementForOverlap == DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL) { //If we are at the end of the for loop
-						//change color to red
+						//Outside color
+						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorOutOfLimitation);
 					}
 				}
 			}
@@ -123,6 +127,7 @@ bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLoca
 			if (soldierItemRepresentation) { //Cast is correct
 				SoldierToSpawn = soldierItemRepresentation->SpawnSoldier(ItemRepresentationLocation);
 				if (SoldierToSpawn) {
+					SoldierToSpawn->ChangeSoldierEmissive(SoldierToSpawn->MaxEmissiveColor);
 					AlreadySelectingSoldier = true;
 					BlockSpawnSoldier = true;
 					return true;
@@ -151,6 +156,7 @@ bool ACameraPlayerController::OnClickSoldierToMove() {
 		if (World) {
 			SoldierToSpawn = Cast<ATrenchesDefenseCharacter>(ActorHited);
 			if (SoldierToSpawn) {
+				SoldierToSpawn->ChangeSoldierEmissive(SoldierToSpawn->MaxEmissiveColor);
 				//Get the SoldierDefaultSpawn object in the world
 				AActor* SoldierDefaultSpawnZone = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
 				if (SoldierDefaultSpawnZone) {
@@ -203,6 +209,17 @@ void ACameraPlayerController::OnClickSetFinalActorLocation() {
 
 void ACameraPlayerController::TickSetRotationFollowingCursor(FVector CursorWorldLocation) {
 	//Look at the cursor and apply the rotation for the soldier forward vector is looking the world cursor location
+	UWorld* World = GetWorld();
+	DrawDebugCone(World,
+		SoldierToSpawn->GetActorLocation(),
+		SoldierToSpawn->GetActorForwardVector(),
+		SoldierToSpawn->CharacterDataAsset->MaxDistanceVision,
+		abs(FMath::DegreesToRadians(SoldierToSpawn->CharacterDataAsset->DegreeOfVision / 2.f)),
+		0.f,
+		20,
+		FColor(SoldierToSpawn->DefaultColor.ToFColor(true)),
+		false,
+		0.05f);
 	SoldierSavedZRotation = UKismetMathLibrary::FindLookAtRotation(SoldierToSpawn->GetActorForwardVector(), CursorWorldLocation - SoldierToSpawn->GetActorLocation()).Yaw;
 	SoldierToSpawn->SetActorRotation(FQuat(FRotator(0.f,SoldierSavedZRotation,0.f)));
 }
@@ -307,11 +324,11 @@ void ACameraPlayerController::OnLeftClick() {
 	}
 	if (ClickSpawningSoldierIsInLimitation && !SoldierIsPlaced) { //îf we're finished the for loop, and we have selected the final location, set the location
 		OnClickSetFinalActorLocation();
-		//change color to default to do
+		//change color to default
+		SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
 	}
 	else {
 		if (SoldierIsPlaced) { //if the player is in the rotation step
-			//change emissive to default
 			AlreadySelectingSoldier = false;
 			SoldierIsPlaced = false;
 			ClickSpawningSoldierIsInLimitation = false;
@@ -320,6 +337,7 @@ void ACameraPlayerController::OnLeftClick() {
 			UWorld* World = GetWorld(); //world reference
 			AActor* spawnActor = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
 			if (spawnActor) {
+				SoldierToSpawn->ChangeSoldierEmissive(0.f);
 				SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
 				spawnActor->SetActorLocation(SaveSpawnActorValue);
 				//AI
