@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "TenchesDefensePreviewCharacter.generated.h"
+#include "TrenchesDefensePreviewCharacter.generated.h"
 
-UCLASS()
-class TRENCHESDEFENSE_API ATenchesDefensePreviewCharacter : public ACharacter
+UCLASS(Blueprintable)
+class TRENCHESDEFENSE_API ATrenchesDefensePreviewCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	ATenchesDefensePreviewCharacter();
+	ATrenchesDefensePreviewCharacter();
 
 protected:
 	// Called when the game starts or when spawned
