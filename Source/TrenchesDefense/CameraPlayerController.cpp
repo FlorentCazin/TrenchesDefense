@@ -345,6 +345,7 @@ void ACameraPlayerController::OnLeftClick() {
 				if (SoldierController) {
 					SoldierController->MoveCharacterToLocationAndRotate(SpawningSoldierLocation, FRotator(0.f, SoldierSavedZRotation, 0.f));
 					BlockSpawnSoldier = false;
+					SoldierToSpawn = nullptr;
 				}
 			}
 			else { //spawning default actor does not exist
