@@ -32,3 +32,10 @@ void ATrenchesDefensePreviewCharacter::SetupPlayerInputComponent(UInputComponent
 
 }
 
+void ATrenchesDefensePreviewCharacter::SetPreview(ATrenchesDefenseCharacter* character) {
+
+}
+
+void ATrenchesDefensePreviewCharacter::StopPreview() {
+
+}

@@ -26,5 +26,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierProperties")
 	TSubclassOf<UWeaponComponent> WeaponComponent;
 
-	//UObject SelectionZone et FiringZone ? (Représentation de la zone graphiquement lors de la selection du soldat)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierProperties")
+	TSubclassOf<AActor> WeaponPreview;
 };

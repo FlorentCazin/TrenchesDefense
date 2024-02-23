@@ -7,6 +7,7 @@
 #include "CharacterDataAsset.h"
 #include "LifeComponent.h"
 #include "SoldierDataAsset.h"
+#include "Animation/AnimationAsset.h"
 #include "TrenchesDefenseCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -54,6 +55,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "CharacterProperties")
 	int MaxLife;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
+	UAnimationAsset* AnimationPreview;
 
 protected:
 	// Called when the game starts or when spawned
