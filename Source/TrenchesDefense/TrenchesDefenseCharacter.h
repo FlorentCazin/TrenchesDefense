@@ -53,7 +53,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "CharacterProperties")
 	bool IsDead;
 
-	UPROPERTY(BlueprintReadWrite, Category = "CharacterProperties")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CharacterProperties")
 	int MaxLife;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")

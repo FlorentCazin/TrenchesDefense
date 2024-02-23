@@ -18,6 +18,7 @@ void ATrenchesDefenseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	LifeComponent->LifeInitialization = MaxLife;
+	LifeComponent->RegenerateLife();
 	CharacterMesh = GetMesh();
 }
 

@@ -18,7 +18,7 @@ public:
 	ULifeComponent();
 
 	//MaxLife
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LifeProperties")
+	UPROPERTY(BlueprintReadWrite, Category = "LifeProperties")
 	int LifeInitialization;
 
 	UPROPERTY(BlueprintReadOnly, Category = "LifeProperties")
@@ -38,6 +38,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RegenerateLife();
-
-		
 };

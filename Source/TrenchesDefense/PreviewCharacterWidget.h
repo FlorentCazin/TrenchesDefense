@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "TrenchesDefenseCharacter.h"
+#include "Components/ProgressBar.h"
 #include "PreviewCharacterWidget.generated.h"
 
 /**
@@ -17,7 +18,32 @@ class TRENCHESDEFENSE_API UPreviewCharacterWidget : public UUserWidget
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ATrenchesDefenseCharacter* CharacterPreview;
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* LifeText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* DamageText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* HeadShotText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UProgressBar* LifeProgressBar;
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,category="ProgressBarColor")
+	FLinearColor HighLifeColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "ProgressBarColor")
+	FLinearColor MiddleLifeColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "ProgressBarColor")
+	FLinearColor LowLifeColor;
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void SetPreviewValuesFromCharacter(ATrenchesDefenseCharacter *character);
+
+	void ChangeProgressBarColor(int life);
 	
 };

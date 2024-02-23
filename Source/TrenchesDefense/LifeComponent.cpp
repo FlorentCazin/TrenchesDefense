@@ -19,8 +19,6 @@ ULifeComponent::ULifeComponent()
 void ULifeComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	//Initisialization of the current Life using LifeInitialization
-	Life = LifeInitialization;
 	// ...
 	
 }
