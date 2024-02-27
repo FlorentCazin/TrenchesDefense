@@ -94,7 +94,9 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 			NumberOfHitedElementForOverlap++; //incr this variable to know how hitresult by multi line trace
 			OverlapSoldierIsInLimitation = false; //reset overlap value for each multi trace line by channel (to know if it's red or green)
 			if (SoldierIsPlaced) { //if the player is in the Rotation step
-				TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
+				if (Hit.bBlockingHit) { //looking the last Hit to rotate, avoid bug with cone previsualization
+					TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
+				}
 			}
 			else { //so the player is in the overlap step
 				if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
@@ -215,8 +217,8 @@ void ACameraPlayerController::TickSetRotationFollowingCursor(FVector CursorWorld
 		SoldierToSpawn->GetActorForwardVector(),
 		SoldierToSpawn->CharacterDataAsset->MaxDistanceVision,
 		abs(FMath::DegreesToRadians(SoldierToSpawn->CharacterDataAsset->DegreeOfVision / 2.f)),
-		0.f,
-		20,
+		0,
+		32,
 		FColor(SoldierToSpawn->DefaultColor.ToFColor(true)),
 		false,
 		0.05f);
