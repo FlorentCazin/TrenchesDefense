@@ -9,9 +9,22 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseGameMode : public AGameMode
 {
 	GENERATED_BODY()
+
+public:
+
+	ATrenchesDefenseGameMode();
+
+	UPROPERTY(BlueprintReadWrite, category = "Player Money")
+	int Wave;
+
+public:
+
+	//Incremente the wave number
+	UFUNCTION(BlueprintCallable)
+	void IncrWave();
 	
 };

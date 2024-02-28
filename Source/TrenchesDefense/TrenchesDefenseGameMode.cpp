@@ -3,3 +3,10 @@
 
 #include "TrenchesDefenseGameMode.h"
 
+ATrenchesDefenseGameMode::ATrenchesDefenseGameMode() {
+	Wave = 0;
+}
+
+void ATrenchesDefenseGameMode::IncrWave() {
+	Wave++;
+}

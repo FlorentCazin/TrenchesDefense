@@ -21,14 +21,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, category="Player Money")
 	int Money;
 
-	UPROPERTY(BlueprintReadWrite, category = "Player Money")
-	int Wave;
-
 public:
-
-	//Incremente the wave number
-	UFUNCTION(BlueprintCallable)
-	void IncrWave();
 
 	//Adding or removing money
 	UFUNCTION(BlueprintCallable)
