@@ -18,8 +18,23 @@ public:
 
 	ATrenchesDefenseGameMode();
 
-	UPROPERTY(BlueprintReadWrite, category = "Player Money")
+	UPROPERTY(BlueprintReadWrite, category = "Game Info")
 	int Wave;
+
+	UPROPERTY(BlueprintReadWrite, category = "Game Info")
+	int NumberOfCharactersFranceSide;
+
+	UPROPERTY(BlueprintReadWrite, category = "Game Info")
+	int NumberOfCharactersGermanySide;
+
+	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
+	float TimeBetweenEachWave;
+
+	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
+	bool StartWave;
+
+	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
+	bool FinishWave;
 
 public:
 
