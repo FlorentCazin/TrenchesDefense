@@ -4,21 +4,40 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "TrenchesDefenseCharacter.h"
 #include "TrenchesDefenseAIController.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseAIController : public AAIController
 {
 	GENERATED_BODY()
 
 public:
 
+	ATrenchesDefenseAIController();
+
+	ATrenchesDefenseCharacter* characterControlled;
+
 	FRotator FinalRotationSpawningSystem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAIPerceptionComponent* AIPerception;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float testPrint;
 	
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 public:
+
+	virtual void OnPossess(APawn* InPawn) override;
 
 	void MoveCharacterToLocationAndRotate(FVector TargetLocation, FRotator TargetRotation);
 
