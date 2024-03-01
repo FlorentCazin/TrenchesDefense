@@ -35,6 +35,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+
+
 public:
 
 	virtual void OnPossess(APawn* InPawn) override;
@@ -53,4 +56,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Die();
+
+	UFUNCTION(Blueprintable)
+	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 };

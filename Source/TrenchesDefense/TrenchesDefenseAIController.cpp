@@ -13,13 +13,24 @@ ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 	UAISenseConfig_Sight* viewSense = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("ViewSense"));
 	viewSense->SightRadius = 0;
+	viewSense->LoseSightRadius = 0;
 	viewSense->PeripheralVisionAngleDegrees = 0;
+	FAISenseAffiliationFilter SenseAffiliationFilter;
+	SenseAffiliationFilter.bDetectEnemies = true;
+	SenseAffiliationFilter.bDetectNeutrals = true;
+	viewSense->DetectionByAffiliation = SenseAffiliationFilter;
 	AIPerception->ConfigureSense(*viewSense);
+	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ATrenchesDefenseAIController::OnPerceptionUpdated);
 }
 
 void ATrenchesDefenseAIController::BeginPlay() {
 	Super::BeginPlay();
 }
+
+void ATrenchesDefenseAIController::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
+}
+
 
 void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	Super::OnPossess(InPawn);
@@ -27,6 +38,7 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	FAISenseID viewID = UAISense::GetSenseID<UAISense_Sight>();
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
+	viewSense->LoseSightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
 	viewSense->PeripheralVisionAngleDegrees = (characterControlled->CharacterDataAsset->DegreeOfVision) /2.f;
 	testPrint = viewSense->SightRadius;
 }
@@ -69,4 +81,9 @@ bool ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 void ATrenchesDefenseAIController::Die() {
 	//lifecomponent a 0, anim, destroy?
 	//IsDead = true;
+}
+
+void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
+	//passer bool a true etc dans blackboard
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Actor->GetName());
 }
