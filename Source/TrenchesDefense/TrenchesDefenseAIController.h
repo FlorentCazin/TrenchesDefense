@@ -27,8 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAIPerceptionComponent* AIPerception;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float testPrint;
 	
 
 protected:

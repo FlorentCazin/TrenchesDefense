@@ -8,7 +8,6 @@
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
-
 	//Create AIPerception and default settings (because character==nullptr here)
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 	UAISenseConfig_Sight* viewSense = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("ViewSense"));
@@ -38,9 +37,9 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	FAISenseID viewID = UAISense::GetSenseID<UAISense_Sight>();
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
-	viewSense->LoseSightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
+	viewSense->LoseSightRadius = viewSense->SightRadius + 100;
 	viewSense->PeripheralVisionAngleDegrees = (characterControlled->CharacterDataAsset->DegreeOfVision) /2.f;
-	testPrint = viewSense->SightRadius;
+	AIPerception->RequestStimuliListenerUpdate();
 }
 
 void ATrenchesDefenseAIController::MoveCharacterToLocationAndRotate(FVector TargetLocation, FRotator TargetRotation) {
