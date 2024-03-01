@@ -50,7 +50,7 @@ public:
 
 	//return true if success
 	UFUNCTION(BlueprintCallable)
-	bool Attack(ATrenchesDefenseCharacter* target);
+	void Attack(ATrenchesDefenseCharacter* target);
 
 	UFUNCTION(BlueprintCallable)
 	void Die();

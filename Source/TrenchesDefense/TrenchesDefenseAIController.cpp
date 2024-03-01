@@ -71,19 +71,22 @@ bool ATrenchesDefenseAIController::OnFail() {
 }
 
 
-bool ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
-	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
-	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
+void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	//si un enemy deja target par un allié ne pas lattaquer? ajouter boolean isAttacked si c'est ca
-	return false;
+	Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
 }
 
 void ATrenchesDefenseAIController::Die() {
+	UnPossess();
+	characterControlled->Destroy();
+	characterControlled = nullptr;
 	//lifecomponent a 0, anim, destroy?
 	//IsDead = true;
 }
 
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
+	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
+	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
 	//passer bool a true etc dans blackboard
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Actor->GetName());
+
 }
