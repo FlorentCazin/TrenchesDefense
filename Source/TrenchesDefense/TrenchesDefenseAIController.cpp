@@ -8,6 +8,7 @@
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
+	PrimaryActorTick.bCanEverTick = true;
 	//Create AIPerception and default settings (because character==nullptr here)
 	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
 	UAISenseConfig_Sight* viewSense = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("ViewSense"));
@@ -34,7 +35,7 @@ void ATrenchesDefenseAIController::Tick(float DeltaTime) {
 void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	Super::OnPossess(InPawn);
 	characterControlled = Cast<ATrenchesDefenseCharacter>(GetCharacter());
-	FAISenseID viewID = UAISense::GetSenseID<UAISense_Sight>();
+	FAISenseID viewID = UAISense::GetSenseID(UAISense_Sight::StaticClass());
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
 	viewSense->LoseSightRadius = viewSense->SightRadius + 100;
