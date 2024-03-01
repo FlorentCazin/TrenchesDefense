@@ -30,7 +30,7 @@ public:
 
 	//return true if success
 	UFUNCTION(BlueprintCallable)
-	bool Attack(TArray<ATrenchesDefenseCharacter*> targets);
+	bool Attack(ATrenchesDefenseCharacter* target);
 
 	UFUNCTION(BlueprintCallable)
 	void Die();

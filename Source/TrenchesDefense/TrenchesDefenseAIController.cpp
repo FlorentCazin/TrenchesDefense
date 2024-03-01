@@ -35,10 +35,13 @@ bool ATrenchesDefenseAIController::OnFail() {
 }
 
 
-bool ATrenchesDefenseAIController::Attack(TArray<ATrenchesDefenseCharacter*> Targets) {
+bool ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
+	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
+	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
 	return false;
 }
 
 void ATrenchesDefenseAIController::Die() {
+	//lifecomponent a 0, anim, destroy?
 	//IsDead = true;
 }
