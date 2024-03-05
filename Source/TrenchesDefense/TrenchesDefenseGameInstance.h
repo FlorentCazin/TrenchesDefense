@@ -4,14 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "SettingsManager.h"
 #include "TrenchesDefenseGameInstance.generated.h"
 
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API UTrenchesDefenseGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
+
+public:
+
+	UTrenchesDefenseGameInstance();
+
+	UPROPERTY(BlueprintReadWrite, category="SettingsManager")
+	USettingsManager* SettingsManager;
 	
 };

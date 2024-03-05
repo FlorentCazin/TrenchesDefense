@@ -3,3 +3,6 @@
 
 #include "SettingsManager.h"
 
+USettingsManager::USettingsManager() {
+	Language = "en";
+}

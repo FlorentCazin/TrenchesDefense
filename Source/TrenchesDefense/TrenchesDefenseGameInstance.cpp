@@ -3,3 +3,6 @@
 
 #include "TrenchesDefenseGameInstance.h"
 
+UTrenchesDefenseGameInstance::UTrenchesDefenseGameInstance() {
+	SettingsManager = CreateDefaultSubobject<USettingsManager>(TEXT("SettingsManager"));
+}
