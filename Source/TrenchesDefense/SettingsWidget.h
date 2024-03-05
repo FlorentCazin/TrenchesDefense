@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenuWidget.generated.h"
+#include "SettingsWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TRENCHESDEFENSE_API UMainMenuWidget : public UUserWidget
+class TRENCHESDEFENSE_API USettingsWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
