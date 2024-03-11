@@ -5,6 +5,8 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "ObjectifToReach.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -41,6 +43,23 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	viewSense->LoseSightRadius = viewSense->SightRadius + 100;
 	viewSense->PeripheralVisionAngleDegrees = (characterControlled->CharacterDataAsset->DegreeOfVision) /2.f;
 	AIPerception->RequestStimuliListenerUpdate();
+
+	//IN PROGRESS RECUP LA LOCATION DE LOBJECTIF
+	UClass* teamComponent = characterControlled->CharacterDataAsset->CharacterTeamComponent;
+	if (teamComponent) {
+		UTeamComponent* TeamComponentInstance = NewObject<UTeamComponent>(this, teamComponent);
+		//if multi => to change
+		if (TeamComponentInstance->name.Equals(TEXT("Enemy"), ESearchCase::IgnoreCase)) {
+			FVector FinalObjectifToReach = TeamComponentInstance->ObjectifToReach;
+			//GetBlackboardComponent()->SetValueAsVector("FinalObjectifToReach", FinalObjectifToReach);
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("NAN pas !="));
+		}
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("NULL"));
+	}
 }
 
 void ATrenchesDefenseAIController::MoveCharacterToLocationAndRotate(FVector TargetLocation, FRotator TargetRotation) {

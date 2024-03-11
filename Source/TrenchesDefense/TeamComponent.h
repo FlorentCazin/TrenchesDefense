@@ -23,7 +23,7 @@ public:
 
 	//Objectif to reach (necessary for multiplayer)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
-	TSubclassOf<AObjectifToReach> ObjectifToReach;
+	FVector ObjectifToReach;
 
 protected:
 	// Called when the game starts
