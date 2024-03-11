@@ -357,3 +357,18 @@ void ACameraPlayerController::OnLeftClick() {
 		}
 	}
 }
+
+void ACameraPlayerController::OnClickCancelLastAction() {
+	if (SoldierIsPlaced && ClickSpawningSoldierIsInLimitation && AlreadySelectingSoldier) {
+		SoldierIsPlaced = false;
+		ClickSpawningSoldierIsInLimitation = false;
+		//refind le player
+	}
+	else {
+		if (SoldierToSpawn) {
+			BlockSpawnSoldier = false;
+			AlreadySelectingSoldier = false;
+			SoldierToSpawn->Destroy();
+		}
+	}
+}

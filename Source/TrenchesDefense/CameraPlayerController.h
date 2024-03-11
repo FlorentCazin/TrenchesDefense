@@ -139,8 +139,8 @@ public:
 	bool OnClickSoldierToMove();
 
 	//Function used when the player click in a specific touch gived in BP, to rollback is action. IN PROGRESS
-	//UFUNCTION(BlueprintCallable)
-	//bool OnClickCancelLastAction();
+	UFUNCTION(BlueprintCallable)
+	void OnClickCancelLastAction();
 
 	//Function IN PROGRESS, to remove collision during previsualization
 	//UFUNCTION(BlueprintCallable)
