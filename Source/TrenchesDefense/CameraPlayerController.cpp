@@ -347,6 +347,7 @@ void ACameraPlayerController::OnLeftClick() {
 				if (SoldierController) {
 					SoldierController->MoveCharacterToLocationAndRotate(SpawningSoldierLocation, FRotator(0.f, SoldierSavedZRotation, 0.f));
 					BlockSpawnSoldier = false;
+					SoldierToSpawn->AlreadySpawned = true;
 					SoldierToSpawn = nullptr;
 				}
 			}
@@ -367,9 +368,20 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 		if (SoldierToSpawn) {
 			BlockSpawnSoldier = false;
 			AlreadySelectingSoldier = false;
-			//ajouter bool pour verif si deja spawn une fois, si c le cas alors pas destroy et laisser a sa place, pa refind non plus
-			SoldierToSpawn->Destroy();
-			//refind le player
+			if (!SoldierToSpawn->AlreadySpawned) {
+				SoldierToSpawn->Destroy();
+				//refind le player
+			}
+			else { //problems, in progress
+				//spawn at SoldierDefaultSpawn actor location
+				UWorld* World = GetWorld(); //world reference
+				AActor* spawnActor = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
+				if (spawnActor) {
+					SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
+					SoldierToSpawn->ChangeSoldierEmissive(0.f);
+					SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
+				}
+			}
 		}
 	}
 }

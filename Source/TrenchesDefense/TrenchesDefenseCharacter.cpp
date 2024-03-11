@@ -11,6 +11,7 @@ ATrenchesDefenseCharacter::ATrenchesDefenseCharacter()
 	LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
 	IndexMaterialToChange = 0;
 	MaxEmissiveColor = 1.f;
+	AlreadySpawned = false;
 }
 
 // Called when the game starts or when spawned

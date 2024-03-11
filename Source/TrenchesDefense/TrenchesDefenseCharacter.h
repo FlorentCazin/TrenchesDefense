@@ -59,6 +59,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
 	UAnimationAsset* AnimationPreview;
 
+	//Check if the soldier is aleady spawned
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
+	bool AlreadySpawned;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
