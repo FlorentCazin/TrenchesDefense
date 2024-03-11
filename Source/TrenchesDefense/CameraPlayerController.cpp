@@ -30,6 +30,8 @@ void ACameraPlayerController::BeginPlay() {
 	Super::BeginPlay();
 
 	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
+	InitialCameraLocation = CameraPlayer->GetActorLocation();
+	InitialCameraRotation = CameraPlayer->GetActorRotation();
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
@@ -118,6 +120,12 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 		TickMoveActorForPrevisualizationDuringOverlap(HitImpactLocation); //Soldier follow the cursor
 	}
 }
+
+void ACameraPlayerController::ResetCameraLocation() {
+	CameraPlayer->SetActorLocation(InitialCameraLocation);
+	CameraPlayer->SetActorRotation(InitialCameraRotation);
+}
+
 
 bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLocation) {
 	//Set intensity soldier intense

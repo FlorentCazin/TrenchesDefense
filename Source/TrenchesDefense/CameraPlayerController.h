@@ -37,6 +37,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
 	int ScreenBorderLimitationForCameraLocation;
 
+	//Debug
+
+	//Save the initial camera location
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
+	FVector InitialCameraLocation;
+
+	//Save the initial camera location
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
+	FRotator InitialCameraRotation;
+
 	//Spawning soldier variables
 
 	//Check if the soldier is in the limitation to accept or not is final position
@@ -99,6 +109,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnLeftClick();
+
+	//debug
+
+	//Reset camera location
+	UFUNCTION(BlueprintCallable)
+	void ResetCameraLocation();
 
 	//Spawning soldier variables
 
