@@ -85,6 +85,7 @@ void ATrenchesDefenseAIController::Die() {
 }
 
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
+	//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, Actor->GetName());
 	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
 	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
 	//passer bool a true etc dans blackboard

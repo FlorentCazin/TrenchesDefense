@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "ObjectifToReach.h"
 #include "TeamComponent.generated.h"
 
 
@@ -16,8 +17,13 @@ public:
 	// Sets default values for this component's properties
 	UTeamComponent();
 
+	//Team name
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TeamProperties")
 	FString name;
+
+	//Objectif to reach (necessary for multiplayer)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
+	TSubclassOf<AObjectifToReach> ObjectifToReach;
 
 protected:
 	// Called when the game starts
