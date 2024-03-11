@@ -362,13 +362,14 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 	if (SoldierIsPlaced && ClickSpawningSoldierIsInLimitation && AlreadySelectingSoldier) {
 		SoldierIsPlaced = false;
 		ClickSpawningSoldierIsInLimitation = false;
-		//refind le player
 	}
 	else {
 		if (SoldierToSpawn) {
 			BlockSpawnSoldier = false;
 			AlreadySelectingSoldier = false;
+			//ajouter bool pour verif si deja spawn une fois, si c le cas alors pas destroy et laisser a sa place, pa refind non plus
 			SoldierToSpawn->Destroy();
+			//refind le player
 		}
 	}
 }
