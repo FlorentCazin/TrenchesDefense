@@ -53,15 +53,12 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 		if (teamComponent->name.Equals(TEXT("Enemy"), ESearchCase::IgnoreCase)) {
 			UTeamWorldSubsystem* TWS = GetWorld()->GetSubsystem<UTeamWorldSubsystem>();
 			FVector FinalObjectifToReach = TWS->GetObjectiveToReach(FGameplayTag::RequestGameplayTag(FName("Team.enemy")));
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FinalObjectifToReach.ToString());
 			GetBlackboardComponent()->SetValueAsVector("FinalObjectifToReach", FinalObjectifToReach);
-		}
-		else {
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("NAN pas !="));
-		}
+		} 
+		//else if ally to add for the multi?
 	}
 	else {
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("NULL"));
+		UE_LOG(LogTemp, Warning, TEXT("AIController teamComponent is null"));
 	}
 }
 
