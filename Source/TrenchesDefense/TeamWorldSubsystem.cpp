@@ -39,12 +39,10 @@ FVector UTeamWorldSubsystem::GetObjectiveToReach(FGameplayTag TeamTag) const {
 	if (TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Enemy")))
 	{
 		if (EnemyObjective) {
-			//il rentre pas dedans, a debug
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("HEREEEE"));
 			return EnemyObjective->GetActorLocation();
 		}
 		else {
-			UE_LOG(LogTemp, Warning, TEXT("EnemyObjective is null"));
+			UE_LOG(LogTemp, Warning, TEXT("EnemyObjective is null, verify in the world if a subclassof ObjectifToReach exist or wait the WorldSubSystem OnWorldBeginPlay before to call GetObjectiveToReach"));
 			return FVector::Zero();
 		}
 	}
@@ -53,12 +51,12 @@ FVector UTeamWorldSubsystem::GetObjectiveToReach(FGameplayTag TeamTag) const {
 			return AllyObjective->GetActorLocation();
 		}
 		else {
-			UE_LOG(LogTemp, Warning, TEXT("AllyObjective is null"));
+			UE_LOG(LogTemp, Warning, TEXT("AllyObjective is null, verify in the world if a subclassof ObjectifToReach exist or wait the WorldSubSystem OnWorldBeginPlay before to call GetObjectiveToReach"));
 			return FVector::Zero();
 		}
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("No objectif to reach with gameplay tag founds"));
+		UE_LOG(LogTemp, Warning, TEXT("No objectif to reach with gameplay tag founds Team.Enemy or Team.Ally"));
 		return FVector::Zero();
 	}
 }
