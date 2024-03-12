@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameplayTagContainer.h"
 #include "ObjectifToReach.generated.h"
 
 UCLASS()
@@ -14,6 +15,9 @@ class TRENCHESDEFENSE_API AObjectifToReach : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AObjectifToReach();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category="ObjectifToReachTeam")
+	FGameplayTag teamTag;
 
 protected:
 	// Called when the game starts or when spawned

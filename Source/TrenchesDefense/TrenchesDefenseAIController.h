@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "TrenchesDefenseCharacter.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "TrenchesDefenseAIController.generated.h"
 
 /**
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAIPerceptionComponent* AIPerception;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBehaviorTree* BehaviorTree;
 
 	
 

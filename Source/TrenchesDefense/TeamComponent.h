@@ -4,34 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "ObjectifToReach.h"
+#include "GameplayTagContainer.h"
 #include "TeamComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable )
-class TRENCHESDEFENSE_API UTeamComponent : public UActorComponent
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, DefaultToInstanced, EditInlineNew)
+class TRENCHESDEFENSE_API UTeamComponent : public UObject
 {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
-	UTeamComponent();
 
 	//Team name
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="TeamProperties")
 	FString name;
 
-	//Objectif to reach (necessary for multiplayer)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
-	FVector ObjectifToReach;
+	FGameplayTag TeamTag;
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	//Objectif to reach (necessary for multiplayer)
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
+	//FVector ObjectifToReach;
 		
 };

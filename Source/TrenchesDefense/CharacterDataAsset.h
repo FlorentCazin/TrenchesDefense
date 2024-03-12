@@ -23,8 +23,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
 	int RunSpeed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
-	TSubclassOf<UTeamComponent> CharacterTeamComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = "CharacterPropertiesDataAsset")
+	UTeamComponent* CharacterTeamComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
 	float MaxDistanceVision;

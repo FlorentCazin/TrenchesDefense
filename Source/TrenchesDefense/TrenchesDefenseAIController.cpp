@@ -7,6 +7,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "ObjectifToReach.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "TeamWorldSubsystem.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -36,7 +37,8 @@ void ATrenchesDefenseAIController::Tick(float DeltaTime) {
 
 void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	Super::OnPossess(InPawn);
-	characterControlled = Cast<ATrenchesDefenseCharacter>(GetCharacter());
+	RunBehaviorTree(BehaviorTree);
+	characterControlled = Cast<ATrenchesDefenseCharacter>(InPawn);
 	FAISenseID viewID = UAISense::GetSenseID(UAISense_Sight::StaticClass());
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
@@ -45,13 +47,14 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	AIPerception->RequestStimuliListenerUpdate();
 
 	//IN PROGRESS RECUP LA LOCATION DE LOBJECTIF
-	UClass* teamComponent = characterControlled->CharacterDataAsset->CharacterTeamComponent;
+	UTeamComponent* teamComponent = characterControlled->CharacterDataAsset->CharacterTeamComponent;
 	if (teamComponent) {
-		UTeamComponent* TeamComponentInstance = NewObject<UTeamComponent>(this, teamComponent);
 		//if multi => to change
-		if (TeamComponentInstance->name.Equals(TEXT("Enemy"), ESearchCase::IgnoreCase)) {
-			FVector FinalObjectifToReach = TeamComponentInstance->ObjectifToReach;
-			//GetBlackboardComponent()->SetValueAsVector("FinalObjectifToReach", FinalObjectifToReach);
+		if (teamComponent->name.Equals(TEXT("Enemy"), ESearchCase::IgnoreCase)) {
+			UTeamWorldSubsystem* TWS = GetWorld()->GetSubsystem<UTeamWorldSubsystem>();
+			FVector FinalObjectifToReach = TWS->GetObjectiveToReach(FGameplayTag::RequestGameplayTag(FName("Team.enemy")));
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, FinalObjectifToReach.ToString());
+			GetBlackboardComponent()->SetValueAsVector("FinalObjectifToReach", FinalObjectifToReach);
 		}
 		else {
 			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("NAN pas !="));
