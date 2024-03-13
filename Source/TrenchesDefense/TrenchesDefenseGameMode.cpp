@@ -10,3 +10,11 @@ ATrenchesDefenseGameMode::ATrenchesDefenseGameMode() {
 void ATrenchesDefenseGameMode::IncrWave() {
 	Wave++;
 }
+
+void ATrenchesDefenseGameMode::StartWave() {
+	InWave = true;
+}
+
+void ATrenchesDefenseGameMode::StartWave() {
+	InWave = false;
+}
