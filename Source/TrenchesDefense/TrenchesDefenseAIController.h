@@ -61,4 +61,7 @@ public:
 
 	UFUNCTION(Blueprintable)
 	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
+
+	UFUNCTION(BlueprintCallable)
+	void setWalkSpeed(int speed);
 };

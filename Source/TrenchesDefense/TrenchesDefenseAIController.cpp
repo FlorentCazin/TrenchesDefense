@@ -8,6 +8,7 @@
 #include "ObjectifToReach.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TeamWorldSubsystem.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -109,4 +110,14 @@ void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulu
 	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
 	//passer bool a true etc dans blackboard
 
+}
+
+void ATrenchesDefenseAIController::setWalkSpeed(int speed) {
+	if (characterControlled) {
+		UCharacterMovementComponent *characterMovement = characterControlled->GetCharacterMovement();
+		characterMovement->MaxWalkSpeed = speed;
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("AIController::setWalkSpeed characterControlled is null"));
+	}
 }
