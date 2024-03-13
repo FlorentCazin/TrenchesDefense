@@ -40,14 +40,17 @@ public:
 	//Debug
 
 	//Save the initial camera location
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
+	UPROPERTY(BlueprintReadOnly, Category = "SoldierSpawningSystem")
 	FVector InitialCameraLocation;
 
 	//Save the initial camera location
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
+	UPROPERTY(BlueprintReadOnly, Category = "SoldierSpawningSystem")
 	FRotator InitialCameraRotation;
 
 	//Spawning soldier variables
+	
+	UPROPERTY(BlueprintReadOnly, Category = "SoldierSpawningSystem")
+	FRotator InitialSoldierSelectedRotation;
 
 	//Check if the soldier is in the limitation to accept or not is final position
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")

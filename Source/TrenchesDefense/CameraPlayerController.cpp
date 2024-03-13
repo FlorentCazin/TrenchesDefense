@@ -157,11 +157,9 @@ bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLoca
 
 
 bool ACameraPlayerController::OnClickSoldierToMove() {
-	//Set intensity soldier intense
-
-
 	//If we click on a soldier already placed
 	if (!AlreadySelectingSoldier && !BlockSpawnSoldier && ActorHited && ActorHited->IsA(ATrenchesDefenseCharacter::StaticClass())) {
+		InitialSoldierSelectedRotation = ActorHited->GetActorRotation();
 		UWorld* World = GetWorld(); //world reference
 		if (World) {
 			SoldierToSpawn = Cast<ATrenchesDefenseCharacter>(ActorHited);
@@ -387,6 +385,7 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 					SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
 					SoldierToSpawn->ChangeSoldierEmissive(0.f);
 					SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
+					SoldierToSpawn->SetActorRotation(InitialSoldierSelectedRotation);
 					spawnActor->SetActorLocation(SaveSpawnActorValue);
 					SoldierToSpawn = nullptr;
 				}
