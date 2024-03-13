@@ -373,7 +373,6 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 		ClickSpawningSoldierIsInLimitation = false;
 	}
 	else {
-		if (SoldierToSpawn) {
 			BlockSpawnSoldier = false;
 			AlreadySelectingSoldier = false;
 			if (!SoldierToSpawn->AlreadySpawned) {
@@ -388,8 +387,9 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 					SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
 					SoldierToSpawn->ChangeSoldierEmissive(0.f);
 					SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
+					spawnActor->SetActorLocation(SaveSpawnActorValue);
+					SoldierToSpawn = nullptr;
 				}
 			}
 		}
-	}
 }
