@@ -21,25 +21,32 @@ public:
 	UPROPERTY(BlueprintReadWrite, category = "Game Info")
 	int Wave;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Game Info")
+	int NumberOfZombieToSpawnHistoryMod;
+
+	//for multiplayer
 	UPROPERTY(BlueprintReadWrite, category = "Game Info")
-	int NumberOfCharactersFranceSide;
+	int NumberOfZombieFranceSide;
 
 	UPROPERTY(BlueprintReadWrite, category = "Game Info")
-	int NumberOfCharactersGermanySide;
+	int NumberOfZombieGermanySide; //si tag.enemy alors quand un meurt --, faire event dispatcher si ==0 => quand numberofzombiegermanyside = 0 && numberofzombiefranceside lancer end wave
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Gameplay Info")
+	float TimeBetweenEachWave; //sexec dans endwave
 
 	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
-	float TimeBetweenEachWave;
-
-	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
-	bool StartWave;
-
-	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
-	bool FinishWave;
+	bool InWave;
 
 public:
 
 	//Incremente the wave number
 	UFUNCTION(BlueprintCallable)
 	void IncrWave();
+
+	UFUNCTION(BlueprintCallable)
+	void StartWave(); //(InWave=true, lancer event pour spawn et ouvrir bunker => en bp peut etre?) 
+
+	UFUNCTION(BlueprintCallable)
+	void EndWave(); //met le inwave a false, et lance startwave apres timebetweeneachwave
 	
 };

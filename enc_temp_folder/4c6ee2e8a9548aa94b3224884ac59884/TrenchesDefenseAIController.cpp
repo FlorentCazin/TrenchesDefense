@@ -103,7 +103,6 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	if (Target && !Target->IsDead) {
 		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
 		if (Target->LifeComponent->Life <= 0) { //target is dead
-			//ajouter if !target->isdead => a true et idem pour son blackboard variable
 			Target->IsDead = true;
 			TargetsInSight.RemoveAt(TargetsInSightIndex);
 			TargetsInSight.Shrink(); //reduce the array size
