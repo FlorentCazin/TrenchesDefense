@@ -9,6 +9,10 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "TeamWorldSubsystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsManager.h"
+#include "Math/Vector.h"
+#include "Containers/Array.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -25,6 +29,8 @@ ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
 	viewSense->DetectionByAffiliation = SenseAffiliationFilter;
 	AIPerception->ConfigureSense(*viewSense);
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ATrenchesDefenseAIController::OnPerceptionUpdated);
+	TargetsInSightIndex = 0;
+	alreadyHasLineOfSight = false;
 }
 
 void ATrenchesDefenseAIController::BeginPlay() {
@@ -43,11 +49,11 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	FAISenseID viewID = UAISense::GetSenseID(UAISense_Sight::StaticClass());
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
-	viewSense->LoseSightRadius = viewSense->SightRadius + 100;
+	viewSense->LoseSightRadius = viewSense->SightRadius + 20;
 	viewSense->PeripheralVisionAngleDegrees = (characterControlled->CharacterDataAsset->DegreeOfVision) /2.f;
 	AIPerception->RequestStimuliListenerUpdate();
 
-	//IN PROGRESS RECUP LA LOCATION DE LOBJECTIF
+	//Get objectif location
 	UTeamComponent* teamComponent = characterControlled->CharacterDataAsset->CharacterTeamComponent;
 	if (teamComponent) {
 		//if multi => to change
@@ -93,7 +99,50 @@ bool ATrenchesDefenseAIController::OnFail() {
 
 void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	//si un enemy deja target par un allié ne pas lattaquer? ajouter boolean isAttacked si c'est ca
-	Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
+
+	if (Target && !Target->IsDead) {
+		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
+		if (Target->LifeComponent->Life <= 0) { //target is dead
+			Target->IsDead = true;
+			TargetsInSight.RemoveAt(TargetsInSightIndex);
+			TargetsInSight.Shrink(); //reduce the array size
+			GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
+			ChangeTargetToAttack();
+		}
+	}
+	else {
+		TargetsInSight.RemoveAt(TargetsInSightIndex);
+		TargetsInSight.Shrink(); //reduce the array size
+		GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
+		ChangeTargetToAttack();
+	}
+}
+
+void ATrenchesDefenseAIController::ChangeTargetToAttack() {
+	int targetsInSightArraySize = TargetsInSight.Num();
+	if (targetsInSightArraySize == 0) {
+		GetBlackboardComponent()->SetValueAsBool("HasLineOfSight", false);
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", nullptr);
+		TargetsInSightIndex = 0;
+		alreadyHasLineOfSight = false;
+	}
+	else {
+		for (int i = 0; i < targetsInSightArraySize; i++) {
+			ATrenchesDefenseCharacter* target = TargetsInSight[i];
+			if (target) { //not nullptr
+				TargetsInSightIndex = i;
+				GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
+				//FVector targetLocation = target->GetActorLocation();
+				//FVector characterLocation = characterControlled->GetActorLocation();
+				//if the target is in his sight (angle)
+
+				//if the target is in his sight (distance)
+				//if (FVector::DistSquared(characterLocation, targetLocation) <= characterControlled->CharacterDataAsset->MaxDistanceVision) {
+					//TargetsInSightIndex = i;
+				//}
+			}
+		}
+	}
 }
 
 void ATrenchesDefenseAIController::Die() {
@@ -105,6 +154,40 @@ void ATrenchesDefenseAIController::Die() {
 }
 
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
+	//faudra faire une verif de fin de stimulus quand souci réglé pour remove du tableau lacteur qui sort
+	ATrenchesDefenseCharacter* target = Cast<ATrenchesDefenseCharacter>(Actor);
+	if (target) {
+		if (characterControlled) {
+			//if the AI is an enemy
+			if (characterControlled->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Enemy"))) {
+				//if he saw an ally
+				if (target->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
+					int findTmp;
+					if (TargetsInSight.Find(target,findTmp)==false) {
+						TargetsInSight.Add(target);
+						if (!alreadyHasLineOfSight) {
+							GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
+							GetBlackboardComponent()->SetValueAsBool("HasLineOfSight", true);
+							alreadyHasLineOfSight = true;
+						}
+					}
+				}
+			}
+			//if the AI is an ally => TO DO
+			else if (characterControlled->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
+				//if he saw an enemy
+				if (target->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Enemy"))) {
+					int findTmp;
+					if (TargetsInSight.Find(target, findTmp) == false) {
+						TargetsInSight.Add(target);
+					}
+				}
+			}
+		}
+	}
+	
+	
+		
 	//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, Actor->GetName());
 	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
 	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset

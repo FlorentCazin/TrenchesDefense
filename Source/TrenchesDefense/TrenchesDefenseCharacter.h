@@ -50,7 +50,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierProperties")
 	USoldierDataAsset* SoldierDataAsset;
 
-	UPROPERTY(BlueprintReadOnly, Category = "CharacterProperties")
+	UPROPERTY(BlueprintReadWrite, Category = "CharacterProperties")
 	bool IsDead;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CharacterProperties")
@@ -58,6 +58,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
 	UAnimationAsset* AnimationPreview;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
+	UAnimationAsset* AnimationDead;
 
 	//Check if the soldier is aleady spawned
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")

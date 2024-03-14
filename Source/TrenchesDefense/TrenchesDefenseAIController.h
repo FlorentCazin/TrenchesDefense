@@ -21,15 +21,25 @@ public:
 
 	ATrenchesDefenseAIController();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "AIController")
 	ATrenchesDefenseCharacter* characterControlled;
 
 	FRotator FinalRotationSpawningSystem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, category="AIController")
 	UAIPerceptionComponent* AIPerception;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "AIController")
 	UBehaviorTree* BehaviorTree;
+
+	UPROPERTY(BlueprintReadOnly, category = "AIControllerAttack")
+	TArray<ATrenchesDefenseCharacter*> TargetsInSight;
+
+	UPROPERTY(BlueprintReadWrite, category = "AIControllerAttack")
+	int TargetsInSightIndex;
+
+	UPROPERTY(BlueprintReadOnly, category = "AIControllerAttack")
+	bool alreadyHasLineOfSight;
 
 	
 
@@ -52,9 +62,11 @@ public:
 
 	bool OnFail();
 
-	//return true if success
 	UFUNCTION(BlueprintCallable)
 	void Attack(ATrenchesDefenseCharacter* target);
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeTargetToAttack();
 
 	UFUNCTION(BlueprintCallable)
 	void Die();
