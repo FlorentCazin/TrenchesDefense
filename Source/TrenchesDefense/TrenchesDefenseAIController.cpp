@@ -187,13 +187,17 @@ void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulu
 					}
 				}
 			}
-			//if the AI is an ally => TO DO
+			//if the AI is an ally
 			else if (characterControlled->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
 				//if he saw an enemy
 				if (target->CharacterDataAsset->CharacterTeamComponent->TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Enemy"))) {
 					int findTmp;
 					if (TargetsInSight.Find(target, findTmp) == false) {
 						TargetsInSight.Add(target);
+						if (!alreadyHasLineOfSight) {
+							GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
+							alreadyHasLineOfSight = true;
+						}
 					}
 				}
 			}
