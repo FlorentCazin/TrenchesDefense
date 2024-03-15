@@ -122,7 +122,6 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 void ATrenchesDefenseAIController::ChangeTargetToAttack() {
 	int targetsInSightArraySize = TargetsInSight.Num();
 	if (targetsInSightArraySize == 0) {
-		GetBlackboardComponent()->SetValueAsBool("HasLineOfSight", false);
 		GetBlackboardComponent()->SetValueAsObject("TargetActor", nullptr);
 		TargetsInSightIndex = 0;
 		alreadyHasLineOfSight = false;
@@ -142,6 +141,10 @@ void ATrenchesDefenseAIController::ChangeTargetToAttack() {
 					//TargetsInSightIndex = i;
 				//}
 			}
+			else if (target && !target->IsDead) { //avoid bugs
+				TargetsInSight.RemoveAt(TargetsInSightIndex);
+				TargetsInSight.Shrink(); //reduce the array size
+			}
 		}
 	}
 }
@@ -157,6 +160,7 @@ void ATrenchesDefenseAIController::Die() {
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
 	//faudra faire une verif de fin de stimulus quand souci réglé pour remove du tableau lacteur qui sort
 	ATrenchesDefenseCharacter* target = Cast<ATrenchesDefenseCharacter>(Actor);
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("detection"));
 	if (target) {
 		if (characterControlled) {
 			//if the AI is an enemy
@@ -168,7 +172,6 @@ void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulu
 						TargetsInSight.Add(target);
 						if (!alreadyHasLineOfSight) {
 							GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
-							GetBlackboardComponent()->SetValueAsBool("HasLineOfSight", true);
 							alreadyHasLineOfSight = true;
 						}
 					}

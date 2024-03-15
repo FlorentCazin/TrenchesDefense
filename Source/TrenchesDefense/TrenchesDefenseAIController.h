@@ -32,13 +32,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "AIController")
 	UBehaviorTree* BehaviorTree;
 
-	UPROPERTY(BlueprintReadOnly, category = "AIControllerAttack")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere, category = "AIControllerAttack")
 	TArray<ATrenchesDefenseCharacter*> TargetsInSight;
 
-	UPROPERTY(BlueprintReadWrite, category = "AIControllerAttack")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "AIControllerAttack")
 	int TargetsInSightIndex;
 
-	UPROPERTY(BlueprintReadOnly, category = "AIControllerAttack")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, category = "AIControllerAttack")
 	bool alreadyHasLineOfSight;
 
 	

@@ -15,6 +15,6 @@ void ATrenchesDefenseGameMode::StartWave() {
 	InWave = true;
 }
 
-void ATrenchesDefenseGameMode::StartWave() {
+void ATrenchesDefenseGameMode::EndWave() {
 	InWave = false;
 }
