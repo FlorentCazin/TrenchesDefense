@@ -13,6 +13,7 @@
 #include "GameplayTagsManager.h"
 #include "Math/Vector.h"
 #include "Containers/Array.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -102,6 +103,22 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	//si un enemy deja target par un allié ne pas lattaquer? ajouter boolean isAttacked si c'est ca
 
 	if (Target && !Target->IsDead) {
+		/*
+		//in his vision
+		FVector actualLocation = characterControlled->GetActorLocation();
+		FVector targetLocation = Target->GetActorLocation();
+		FVector vectorBetweenBoth = targetLocation - actualLocation;
+		double dot = FVector::DotProduct(vectorBetweenBoth, characterControlled->GetActorForwardVector()) / vectorBetweenBoth.Size();
+		double degresACos = FMath::Acos(dot);
+
+		// Convertissez l'angle en degrés
+		double AngleInDegrees = FMath::RadiansToDegrees(degresACos);
+
+
+		if (AngleInDegrees <= characterControlled->CharacterDataAsset->DegreeOfVision / 2) {
+
+		}*/
+
 		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
 		if (Target->LifeComponent->Life <= 0) { //target is dead
 			if (!Target->IsDead) { //init the target to dead, give money to player
