@@ -7,6 +7,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "TrenchesDefenseCharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "TrenchesDefLocalPlayerSubsystem.h"
 #include "TrenchesDefenseAIController.generated.h"
 
 /**
@@ -40,6 +41,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, category = "AIControllerAttack")
 	bool alreadyHasLineOfSight;
+
+	UTrenchesDefLocalPlayerSubsystem* characterControlledLocalSubSystem;
 
 	
 

@@ -46,6 +46,7 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	Super::OnPossess(InPawn);
 	RunBehaviorTree(BehaviorTree);
 	characterControlled = Cast<ATrenchesDefenseCharacter>(InPawn);
+	//characterControlledLocalSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
 	FAISenseID viewID = UAISense::GetSenseID(UAISense_Sight::StaticClass());
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
@@ -103,9 +104,9 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	if (Target && !Target->IsDead) {
 		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
 		if (Target->LifeComponent->Life <= 0) { //target is dead
-			//ajouter if !target->isdead => a true et idem pour son blackboard variable
-			if (!Target->IsDead) {
+			if (!Target->IsDead) { //init the target to dead, give money to player
 				Target->IsDead = true;
+				//characterControlledLocalSubSystem->ChangeMoney(characterControlled->SoldierDataAsset->MoneyPerKill);
 				ATrenchesDefenseAIController *targetController = Cast<ATrenchesDefenseAIController>(Target->GetController());
 				if (targetController) {
 					targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
@@ -170,7 +171,6 @@ void ATrenchesDefenseAIController::Die() {
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
 	//faudra faire une verif de fin de stimulus quand souci réglé pour remove du tableau lacteur qui sort
 	ATrenchesDefenseCharacter* target = Cast<ATrenchesDefenseCharacter>(Actor);
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("detection"));
 	if (target) {
 		if (characterControlled) {
 			//if the AI is an enemy
