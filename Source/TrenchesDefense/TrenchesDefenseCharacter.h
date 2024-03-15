@@ -60,6 +60,9 @@ public:
 	UAnimationAsset* AnimationPreview;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
+	UAnimationAsset* AnimationAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterProperties")
 	UAnimationAsset* AnimationDead;
 
 	//Check if the soldier is aleady spawned

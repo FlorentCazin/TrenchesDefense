@@ -12,7 +12,6 @@ ATrenchesDefenseCharacter::ATrenchesDefenseCharacter()
 	IndexMaterialToChange = 0;
 	MaxEmissiveColor = 1.f;
 	AlreadySpawned = false;
-	IsDead = false;
 }
 
 // Called when the game starts or when spawned

@@ -104,7 +104,17 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
 		if (Target->LifeComponent->Life <= 0) { //target is dead
 			//ajouter if !target->isdead => a true et idem pour son blackboard variable
-			Target->IsDead = true;
+			if (!Target->IsDead) {
+				Target->IsDead = true;
+				ATrenchesDefenseAIController *targetController = Cast<ATrenchesDefenseAIController>(Target->GetController());
+				if (targetController) {
+					targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
+				}
+				else {
+					UE_LOG(LogTemp, Warning, TEXT("GetBlackBoard of the target value as bool problem"));
+				}
+
+			}
 			TargetsInSight.RemoveAt(TargetsInSightIndex);
 			TargetsInSight.Shrink(); //reduce the array size
 			GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
