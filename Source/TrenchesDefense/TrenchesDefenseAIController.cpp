@@ -103,7 +103,6 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 	//si un enemy deja target par un allié ne pas lattaquer? ajouter boolean isAttacked si c'est ca
 
 	if (Target && !Target->IsDead) {
-		/*
 		//in his vision
 		FVector actualLocation = characterControlled->GetActorLocation();
 		FVector targetLocation = Target->GetActorLocation();
@@ -117,29 +116,34 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 
 		if (AngleInDegrees <= characterControlled->CharacterDataAsset->DegreeOfVision / 2) {
 
-		}*/
+			Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
+			if (Target->LifeComponent->Life <= 0) { //target is dead
+				if (!Target->IsDead) { //init the target to dead, give money to player
+					Target->IsDead = true;
+					//characterControlledLocalSubSystem->ChangeMoney(characterControlled->SoldierDataAsset->MoneyPerKill);
+					ATrenchesDefenseAIController* targetController = Cast<ATrenchesDefenseAIController>(Target->GetController());
+					if (targetController) {
+						targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
+					}
+					else {
+						UE_LOG(LogTemp, Warning, TEXT("GetBlackBoard of the target value as bool problem"));
+					}
 
-		Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
-		if (Target->LifeComponent->Life <= 0) { //target is dead
-			if (!Target->IsDead) { //init the target to dead, give money to player
-				Target->IsDead = true;
-				//characterControlledLocalSubSystem->ChangeMoney(characterControlled->SoldierDataAsset->MoneyPerKill);
-				ATrenchesDefenseAIController *targetController = Cast<ATrenchesDefenseAIController>(Target->GetController());
-				if (targetController) {
-					targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
 				}
-				else {
-					UE_LOG(LogTemp, Warning, TEXT("GetBlackBoard of the target value as bool problem"));
-				}
-
+				TargetsInSight.RemoveAt(TargetsInSightIndex);
+				TargetsInSight.Shrink(); //reduce the array size
+				GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
+				ChangeTargetToAttack();
 			}
+		}
+		else {
 			TargetsInSight.RemoveAt(TargetsInSightIndex);
 			TargetsInSight.Shrink(); //reduce the array size
 			GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
 			ChangeTargetToAttack();
 		}
 	}
-	else {
+	else { //not in vision but target
 		TargetsInSight.RemoveAt(TargetsInSightIndex);
 		TargetsInSight.Shrink(); //reduce the array size
 		GetBlackboardComponent()->SetValueAsBool("CanAttack", false);
