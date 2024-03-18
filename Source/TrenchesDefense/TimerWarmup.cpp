@@ -29,6 +29,7 @@ void ATimerWarmup::Tick(float DeltaTime)
 }
 
 void ATimerWarmup::StartTimer() {
+	TimerText->SetVisibility(true);
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATimerWarmup::ChangeText, 1.f, true, 1.0f);
 }
 
@@ -40,6 +41,7 @@ void ATimerWarmup::ChangeText() {
 		}
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		ActualTime = TimeInSeconds;
+		TimerText->SetVisibility(false);
 	}
 	else {
 		FString TimerTmp;
