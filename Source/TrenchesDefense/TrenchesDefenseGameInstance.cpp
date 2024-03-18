@@ -5,4 +5,10 @@
 
 UTrenchesDefenseGameInstance::UTrenchesDefenseGameInstance() {
 	SettingsManager = CreateDefaultSubobject<USettingsManager>(TEXT("SettingsManager"));
+	TotalWave = 1;
 }
+
+void UTrenchesDefenseGameInstance::initDefaultValueGameInstance() {
+	TotalWave = 1;
+}
+

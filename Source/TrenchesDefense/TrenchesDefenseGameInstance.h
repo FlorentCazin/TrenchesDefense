@@ -21,5 +21,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, category="SettingsManager")
 	USettingsManager* SettingsManager;
+
+	UPROPERTY(BlueprintReadWrite, category = "SettingsManager")
+	int TotalWave;
 	
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void initDefaultValueGameInstance();
 };
