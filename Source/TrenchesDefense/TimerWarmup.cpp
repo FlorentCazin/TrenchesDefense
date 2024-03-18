@@ -4,6 +4,7 @@
 #include "TimerWarmup.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "TrenchesDefenseGameMode.h"
 
 // Sets default values
 ATimerWarmup::ATimerWarmup()
@@ -32,17 +33,20 @@ void ATimerWarmup::StartTimer() {
 }
 
 void ATimerWarmup::ChangeText() {
-	if (ActualTime <= 0) {
-		//get world subsystem et start wave
+	if (ActualTime < 0) {
+		ATrenchesDefenseGameMode *GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
+		if (GM) {
+			GM->StartWave();
+		}
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		ActualTime = TimeInSeconds;
 	}
 	else {
-		FString TimerTmp = FString::Printf(TEXT("00:00"));
+		FString TimerTmp;
 		int minutes = ActualTime / 60;
 		int seconds = ActualTime - (minutes * 60);
-		if (minutes == 0 && seconds == 0) {
-			//do nothing, already initialized
+		if (minutes <= 0 && seconds <= 0) {
+			TimerTmp = FString::Printf(TEXT("00:00"));
 		}
 		else if (minutes < 10) {
 			if (seconds < 10) {

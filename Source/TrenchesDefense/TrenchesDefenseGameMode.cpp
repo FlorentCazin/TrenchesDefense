@@ -4,7 +4,7 @@
 #include "TrenchesDefenseGameMode.h"
 
 ATrenchesDefenseGameMode::ATrenchesDefenseGameMode() {
-	Wave = 0;
+	Wave = 1;
 }
 
 void ATrenchesDefenseGameMode::IncrWave() {

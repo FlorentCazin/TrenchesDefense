@@ -39,6 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartTimer();
 
+	//change text but launch wave too
 	void ChangeText();
 
 };
