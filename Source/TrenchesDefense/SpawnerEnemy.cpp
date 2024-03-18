@@ -13,7 +13,7 @@ ASpawnerEnemy::ASpawnerEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	NumberOfEnemy = 100;
-	TimeBetweenSpawn = 10.f;
+	TimeBetweenSpawn = 1.f;
 	NumberOfIterationSpawn = 5;
 	actualIteration = 0;
 }
@@ -40,10 +40,11 @@ void ASpawnerEnemy::Tick(float DeltaTime)
 }
 
 void ASpawnerEnemy::StartSpawningEnemies() {
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASpawnerEnemy::SpawnEnemies, 1.f, true, TimeBetweenSpawn);
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &ASpawnerEnemy::SpawnEnemies, TimeBetweenSpawn, true, 1.f);
 }
 
 void ASpawnerEnemy::SpawnEnemies() {
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("call function"));
 	if (actualIteration == NumberOfIterationSpawn) {
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		actualIteration = 0;
@@ -52,11 +53,16 @@ void ASpawnerEnemy::SpawnEnemies() {
 		int random;
 		for (int i = 0; i < NumberOfEnemy / NumberOfIterationSpawn; i++) {
 			random = FMath::RandRange(1, 20);
+			//configurer param spawn pour always spawn
 			if (random == 5) {
-				World->SpawnActor<EnemiesToSpawn[1]>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation());
+				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation());
 			}
+			else {
+				GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("here"));
+				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation());
+			}
+			actualIteration++;
 		}
-		actualIteration++;
 	}
 }
 
