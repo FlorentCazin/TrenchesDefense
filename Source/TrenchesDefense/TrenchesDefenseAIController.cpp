@@ -189,7 +189,7 @@ void ATrenchesDefenseAIController::Die() {
 	}
 	UnPossess();
 	characterControlled->Destroy();
-	characterControlled = nullptr;
+	Destroy();
 	//lifecomponent a 0, anim, destroy?
 	//IsDead = true;
 }

@@ -2,6 +2,7 @@
 
 
 #include "TrenchesDefenseGameMode.h"
+#include "GameplayTagsManager.h"
 
 void ATrenchesDefenseGameMode::BeginPlay() {
 	Super::BeginPlay();
@@ -42,5 +43,24 @@ void ATrenchesDefenseGameMode::EndWave() {
 }
 
 void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag) {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("TEST"));
+	//Ally
+	/*
+	if (TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
+		if (IsZombie) {
+			NumberOfZombieAllySide--;
+		}
+		else {
+			NumberOfSoldierAllySide--;
+		}
+	}
+	//Enemy
+	else if (TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Enemy"))) {
+		if (IsZombie) {
+			NumberOfZombieEnemySide--;
+		}
+		else {
+			NumberOfSoldierEnemySide--;
+		}
+	}	*/
+
 }

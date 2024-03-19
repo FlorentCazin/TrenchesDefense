@@ -45,7 +45,6 @@ void ASpawnerEnemy::StartSpawningEnemies() {
 }
 
 void ASpawnerEnemy::SpawnEnemies() {
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("call function"));
 	if (actualIteration == NumberOfIterationSpawn) {
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		actualIteration = 0;
@@ -56,13 +55,15 @@ void ASpawnerEnemy::SpawnEnemies() {
 			random = FMath::RandRange(1, 20);
 			//configurer param spawn pour always spawn
 			if (random == 5) {
-				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation(), spawnParameters);
+				ATrenchesDefenseCharacter *tmp = World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation(), spawnParameters);
+				//tmp->IsZombie;
+				//tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag;
 			}
 			else {
 				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation(), spawnParameters);
 			}
-			actualIteration++;
 		}
+		actualIteration++;
 	}
 }
 
