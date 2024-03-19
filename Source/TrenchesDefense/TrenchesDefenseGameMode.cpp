@@ -3,6 +3,17 @@
 
 #include "TrenchesDefenseGameMode.h"
 
+void ATrenchesDefenseGameMode::BeginPlay() {
+	Super::BeginPlay();
+
+	//init timer with GameMode values
+	timer = Cast<ATimerWarmup>(UGameplayStatics::GetActorOfClass(GetWorld(), ATimerWarmup::StaticClass()));
+	timer->TimeInSeconds = TimeInSeconds;
+	timer->InitTimer();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnerEnemy::StaticClass(), spawnerEnemies);
+}
+
+
 ATrenchesDefenseGameMode::ATrenchesDefenseGameMode() {
 	Wave = 1;
 }
@@ -13,8 +24,18 @@ void ATrenchesDefenseGameMode::IncrWave() {
 
 void ATrenchesDefenseGameMode::StartWave() {
 	InWave = true;
+	//timer
+	timer->SetActorHiddenInGame(true);
+	for (auto &spawner: spawnerEnemies) {
+		ASpawnerEnemy* spawnerEnemy = Cast<ASpawnerEnemy>(spawner);
+		spawnerEnemy->StartSpawningEnemies();
+	}
 }
 
 void ATrenchesDefenseGameMode::EndWave() {
 	InWave = false;
+	//timer
+	timer->SetActorHiddenInGame(false);
+	timer->StartTimer();
+
 }

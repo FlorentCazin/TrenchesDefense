@@ -17,10 +17,10 @@ public:
 	// Sets default values for this actor's properties
 	ATimerWarmup();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "timer warmup")
+	UPROPERTY(BlueprintReadOnly, category = "timer warmup")
 	UTextRenderComponent* TimerText;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "timer warmup")
+	UPROPERTY(BlueprintReadOnly, category = "timer warmup")
 	int TimeInSeconds;
 
 	int ActualTime;
@@ -41,5 +41,8 @@ public:
 
 	//change text but launch wave too
 	void ChangeText();
+
+	void InitTimer();
+
 
 };

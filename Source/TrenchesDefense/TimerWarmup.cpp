@@ -18,7 +18,6 @@ ATimerWarmup::ATimerWarmup()
 void ATimerWarmup::BeginPlay()
 {
 	Super::BeginPlay();
-	ActualTime = TimeInSeconds;
 }
 
 // Called every frame
@@ -28,8 +27,11 @@ void ATimerWarmup::Tick(float DeltaTime)
 
 }
 
+void ATimerWarmup::InitTimer() {
+	ActualTime = TimeInSeconds;
+}
+
 void ATimerWarmup::StartTimer() {
-	TimerText->SetVisibility(true);
 	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATimerWarmup::ChangeText, 1.f, true, 1.0f);
 }
 
@@ -40,8 +42,7 @@ void ATimerWarmup::ChangeText() {
 			GM->StartWave();
 		}
 		GetWorldTimerManager().ClearTimer(TimerHandle);
-		ActualTime = TimeInSeconds;
-		TimerText->SetVisibility(false);
+		InitTimer();
 	}
 	else {
 		FString TimerTmp;

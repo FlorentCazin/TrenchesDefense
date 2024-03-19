@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "TimerWarmup.h"
+#include "SpawnerEnemy.h"
 #include "TrenchesDefenseGameMode.generated.h"
 
 /**
@@ -18,24 +21,34 @@ public:
 
 	ATrenchesDefenseGameMode();
 
-	UPROPERTY(BlueprintReadWrite, category = "Game Info")
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
 	int Wave;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Game Info")
-	int NumberOfZombieToSpawnHistoryMod;
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	int NumberOfZombieAllySide;
 
-	//for multiplayer
-	UPROPERTY(BlueprintReadWrite, category = "Game Info")
-	int NumberOfZombieFranceSide;
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	int NumberOfSoldierAllySide;
 
-	UPROPERTY(BlueprintReadWrite, category = "Game Info")
-	int NumberOfZombieGermanySide; //si tag.enemy alors quand un meurt --, faire event dispatcher si ==0 => quand numberofzombiegermanyside = 0 && numberofzombiefranceside lancer end wave
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	int NumberOfZombieEnemySide; //si tag.enemy alors quand un meurt --, faire event dispatcher si ==0 => quand numberofzombiegermanyside = 0 && numberofzombiefranceside lancer end wave
 
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	int NumberOfSoldierEnemySide;
+
+	//Initialization of the timer
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Gameplay Info")
-	float TimeBetweenEachWave; //sexec dans endwave
+	int TimeInSeconds = 90; //sexec dans endwave
 
-	UPROPERTY(BlueprintReadWrite, category = "Gameplay Info")
+	UPROPERTY(BlueprintReadOnly, category = "Gameplay Info")
 	bool InWave;
+
+	//Timer In Map
+	ATimerWarmup* timer;
+
+	//Spawner enemies
+	TArray<AActor*> spawnerEnemies;
+
 
 public:
 
@@ -48,5 +61,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void EndWave(); //met le inwave a false, et lance startwave apres timebetweeneachwave
+
+	virtual void BeginPlay() override;
 	
 };

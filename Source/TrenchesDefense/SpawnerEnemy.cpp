@@ -24,14 +24,13 @@ ASpawnerEnemy::ASpawnerEnemy()
 void ASpawnerEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	World = GetWorld();
 	if (NumberOfEnemy % NumberOfIterationSpawn != 0) {
 		UE_LOG(LogTemp, Warning, TEXT("SpawnerEnemy NumberOfEnemy % NumberOfIterationSpawn != 0 will cause trouble"))
 	}
-	World = GetWorld();
-	if (EnemiesToSpawn.Num() != 2) {
+	else if (EnemiesToSpawn.Num() != 2) {
 		UE_LOG(LogTemp, Warning, TEXT("SpawnerEnemy EnemiesToSpawn.Num() != 2 script is working only for 2 types of enemies, make changes"));
 	}
-	
 }
 
 // Called every frame
