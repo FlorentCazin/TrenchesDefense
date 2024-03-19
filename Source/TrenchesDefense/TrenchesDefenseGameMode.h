@@ -53,7 +53,7 @@ public:
 	//Spawner enemies
 	TArray<AActor*> spawnerEnemies;
 
-	UPROPERTY(BlueprintAssignable, Category="GameMode EventDispatcher")
+	UPROPERTY(BlueprintAssignable, category="GameMode EventDispatcher")
 	FCharacterDead CharacterDead;
 
 	UPROPERTY(BlueprintAssignable, category = "GeneralWidget EventDispatcher")

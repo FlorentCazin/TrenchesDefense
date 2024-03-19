@@ -4,6 +4,7 @@
 #include "SpawnerEnemy.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "TrenchesDefenseGameMode.h"
 #include "Math/UnrealMathUtility.h"
 
 
@@ -45,6 +46,9 @@ void ASpawnerEnemy::StartSpawningEnemies() {
 }
 
 void ASpawnerEnemy::SpawnEnemies() {
+	//opti => beginplay -> .h //error dependance no time to fix this
+	ATrenchesDefenseGameMode* GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
+
 	if (actualIteration == NumberOfIterationSpawn) {
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		actualIteration = 0;
@@ -56,11 +60,25 @@ void ASpawnerEnemy::SpawnEnemies() {
 			//configurer param spawn pour always spawn
 			if (random == 5) {
 				ATrenchesDefenseCharacter *tmp = World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation(), spawnParameters);
-				//tmp->IsZombie;
-				//tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag;
+				if (tmp && tmp->IsZombie) {
+					if (tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag == FGameplayTag::RequestGameplayTag(FName("Team.enemy"))) {
+						GM->NumberOfZombieEnemySide++;
+					}
+					else if (tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag == FGameplayTag::RequestGameplayTag(FName("Team.ally"))) {
+						GM->NumberOfZombieAllySide++;
+					}
+				}
 			}
 			else {
-				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation(), spawnParameters);
+				ATrenchesDefenseCharacter* tmp = World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation(), spawnParameters);
+				if (tmp && tmp->IsZombie) {
+					if (tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag == FGameplayTag::RequestGameplayTag(FName("Team.enemy"))) {
+						GM->NumberOfZombieEnemySide++;
+					}
+					else if (tmp->CharacterDataAsset->CharacterTeamComponent->TeamTag == FGameplayTag::RequestGameplayTag(FName("Team.ally"))) {
+						GM->NumberOfZombieAllySide++;
+					}
+				}
 			}
 		}
 		actualIteration++;

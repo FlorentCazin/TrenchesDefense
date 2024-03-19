@@ -21,9 +21,5 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
 	FGameplayTag TeamTag;
-
-	//Objectif to reach (necessary for multiplayer)
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TeamProperties")
-	//FVector ObjectifToReach;
 		
 };

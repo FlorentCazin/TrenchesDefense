@@ -35,6 +35,8 @@ void ATrenchesDefenseGameMode::StartWave() {
 }
 
 void ATrenchesDefenseGameMode::EndWave() {
+	NumberOfZombieAllySide = 0;
+	NumberOfZombieEnemySide = 0;
 	InWave = false;
 	//Timer
 	timer->SetActorHiddenInGame(false);
@@ -64,7 +66,7 @@ void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGam
 		}
 	}
 	//Next Wave
-	if (NumberOfZombieAllySide == 0 && NumberOfZombieEnemySide == 0) {
+	if (NumberOfZombieAllySide <= 0 && NumberOfZombieEnemySide <= 0) {
 		EndWave();
 		//faire parler general "bravo next wave"
 		//incr wave

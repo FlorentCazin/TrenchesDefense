@@ -8,6 +8,7 @@
 #include "LifeComponent.h"
 #include "SoldierDataAsset.h"
 #include "Animation/AnimationAsset.h"
+#include "GameplayTagContainer.h"
 #include "TrenchesDefenseCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -71,6 +72,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
 	bool IsZombie = false;
+
+	FGameplayTag TeamTagFromTeamComponent;
 
 protected:
 	// Called when the game starts or when spawned

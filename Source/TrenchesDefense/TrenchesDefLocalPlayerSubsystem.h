@@ -6,6 +6,8 @@
 #include "Subsystems/LocalPlayerSubsystem.h"
 #include "TrenchesDefLocalPlayerSubsystem.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGiveMoney, int, MoneyToGive);
+
 /**
  * 
  */
@@ -21,10 +23,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, category="Player Money")
 	int Money;
 
+	UPROPERTY(BlueprintAssignable, category = "TrenchesDefLocalPlayerSubsystem EventDispatcher")
+	FGiveMoney GiveMoneyEvent;
+
 public:
 
 	//Adding or removing money
 	UFUNCTION(BlueprintCallable)
-	void ChangeMoney(int value);
+	void ChangeMoney(int MoneyToGive);
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection);
 	
 };

@@ -43,6 +43,9 @@ public:
 	ESpawnActorCollisionHandlingMethod spawnActorCollisionHandlingMethod;
 	FActorSpawnParameters spawnParameters;
 
+	int actualNumberSpawn;
+
+
 
 protected:
 	// Called when the game starts or when spawned

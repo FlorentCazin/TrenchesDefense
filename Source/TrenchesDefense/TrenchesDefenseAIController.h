@@ -41,9 +41,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, category = "AIControllerAttack")
 	bool alreadyHasLineOfSight;
-
-	UTrenchesDefLocalPlayerSubsystem* characterControlledLocalSubSystem;
-
 	
 
 protected:

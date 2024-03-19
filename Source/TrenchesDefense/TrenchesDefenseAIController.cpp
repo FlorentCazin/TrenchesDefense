@@ -127,9 +127,14 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 						targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
 					}
 					else {
-						UE_LOG(LogTemp, Warning, TEXT("GetBlackBoard of the target value as bool problem"));
+						UE_LOG(LogTemp, Warning, TEXT("targetController attack problem is null"));
 					}
 
+					//Give money
+					// if a soldier do the kill
+					if (!characterControlled->IsZombie) {
+						//call event subsystemlocal
+					}
 				}
 				TargetsInSight.RemoveAt(TargetsInSightIndex);
 				TargetsInSight.Shrink(); //reduce the array size
