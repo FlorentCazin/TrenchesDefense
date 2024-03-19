@@ -11,6 +11,7 @@ void ATrenchesDefenseGameMode::BeginPlay() {
 	timer->TimeInSeconds = TimeInSeconds;
 	timer->InitTimer();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnerEnemy::StaticClass(), spawnerEnemies);
+	CharacterDead.AddDynamic(this, &ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos);
 }
 
 
@@ -38,4 +39,8 @@ void ATrenchesDefenseGameMode::EndWave() {
 	timer->SetActorHiddenInGame(false);
 	timer->StartTimer();
 
+}
+
+void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag) {
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("TEST"));
 }

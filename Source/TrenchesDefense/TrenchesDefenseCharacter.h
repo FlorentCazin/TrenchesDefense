@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
 	bool AlreadySpawned;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
+	bool IsZombie = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

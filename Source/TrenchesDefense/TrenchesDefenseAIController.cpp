@@ -14,6 +14,7 @@
 #include "Math/Vector.h"
 #include "Containers/Array.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "TrenchesDefenseGameMode.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -116,8 +117,8 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 
 		if (AngleInDegrees <= characterControlled->CharacterDataAsset->DegreeOfVision / 2) {
 
-			Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage);
-			if (Target->LifeComponent->Life <= 0) { //target is dead
+			;
+			if (Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage)) { //target is dead
 				if (!Target->IsDead) { //init the target to dead, give money to player
 					Target->IsDead = true;
 					//characterControlledLocalSubSystem->ChangeMoney(characterControlled->SoldierDataAsset->MoneyPerKill);
@@ -182,6 +183,10 @@ void ATrenchesDefenseAIController::ChangeTargetToAttack() {
 }
 
 void ATrenchesDefenseAIController::Die() {
+	ATrenchesDefenseGameMode *GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
+	if (GM) {
+		GM->CharacterDead.Broadcast(characterControlled->IsZombie, characterControlled->CharacterDataAsset->CharacterTeamComponent->TeamTag);
+	}
 	UnPossess();
 	characterControlled->Destroy();
 	characterControlled = nullptr;

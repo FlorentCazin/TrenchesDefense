@@ -9,9 +9,8 @@
 #include "SpawnerEnemy.h"
 #include "TrenchesDefenseGameMode.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCharacterDead, bool, IsZombie, FGameplayTag, TeamTag);
+
 UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseGameMode : public AGameMode
 {
@@ -49,6 +48,10 @@ public:
 	//Spawner enemies
 	TArray<AActor*> spawnerEnemies;
 
+	UPROPERTY(BlueprintAssignable, Category="GameMode EventDispatcher")
+	FCharacterDead CharacterDead;
+
+
 
 public:
 
@@ -63,5 +66,8 @@ public:
 	void EndWave(); //met le inwave a false, et lance startwave apres timebetweeneachwave
 
 	virtual void BeginPlay() override;
+	
+	UFUNCTION(BlueprintCallable)
+	void UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag);
 	
 };
