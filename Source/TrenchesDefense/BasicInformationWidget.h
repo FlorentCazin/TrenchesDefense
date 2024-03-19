@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "BasicInformationWidget.generated.h"
 
+
 /**
  * 
  */
@@ -29,6 +30,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (bindWidget))
 	class UTextBlock* WaveNumber;
 
+
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -36,5 +38,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeWaveText(int wave);
-	
+
 };

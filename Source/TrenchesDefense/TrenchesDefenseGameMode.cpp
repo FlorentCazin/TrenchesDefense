@@ -36,15 +36,16 @@ void ATrenchesDefenseGameMode::StartWave() {
 
 void ATrenchesDefenseGameMode::EndWave() {
 	InWave = false;
-	//timer
+	//Timer
 	timer->SetActorHiddenInGame(false);
 	timer->StartTimer();
-
+	//General Speaking
+	FString GeneralSpeaking = FString::Printf(TEXT("Bravo soldat, vous passez à la manche %d"), Wave);
+	GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 }
 
 void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag) {
 	//Ally
-	/*
 	if (TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
 		if (IsZombie) {
 			NumberOfZombieAllySide--;
@@ -61,6 +62,12 @@ void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGam
 		else {
 			NumberOfSoldierEnemySide--;
 		}
-	}	*/
-
+	}
+	//Next Wave
+	if (NumberOfZombieAllySide == 0 && NumberOfZombieEnemySide == 0) {
+		EndWave();
+		//faire parler general "bravo next wave"
+		//incr wave
+		//lancer event pour afficher argent
+	}
 }

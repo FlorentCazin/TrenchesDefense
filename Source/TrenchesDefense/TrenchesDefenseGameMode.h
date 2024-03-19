@@ -7,9 +7,14 @@
 #include "Kismet/GameplayStatics.h"
 #include "TimerWarmup.h"
 #include "SpawnerEnemy.h"
+#include "GeneralSoldierSpeakingWidget.h"
 #include "TrenchesDefenseGameMode.generated.h"
 
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCharacterDead, bool, IsZombie, FGameplayTag, TeamTag);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGeneralSpeaking, FString, GeneralTalking);
+
 
 UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseGameMode : public AGameMode
@@ -29,7 +34,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, category = "Game Info")
 	int NumberOfSoldierAllySide;
 
-	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Game Info")
 	int NumberOfZombieEnemySide; //si tag.enemy alors quand un meurt --, faire event dispatcher si ==0 => quand numberofzombiegermanyside = 0 && numberofzombiefranceside lancer end wave
 
 	UPROPERTY(BlueprintReadOnly, category = "Game Info")
@@ -51,6 +56,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="GameMode EventDispatcher")
 	FCharacterDead CharacterDead;
 
+	UPROPERTY(BlueprintAssignable, category = "GeneralWidget EventDispatcher")
+	FGeneralSpeaking GeneralSpeakingEvent;
 
 
 public:

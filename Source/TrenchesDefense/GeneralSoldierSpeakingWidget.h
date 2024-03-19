@@ -7,6 +7,7 @@
 #include "Components/Image.h"
 #include "GeneralSoldierSpeakingWidget.generated.h"
 
+
 /**
  * 
  */
@@ -28,11 +29,25 @@ public:
 	UPROPERTY(BlueprintReadWrite, category="WidgetGeneral")
 	bool IsAlreadyTalking;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "WidgetGeneral")
+	float TimeToShowSpeaking = 10.f;
+
+	FTimerHandle TimerHandle;
+
+protected:
+	// Called when the game starts
+	virtual void NativeOnInitialized() override;
 
 public:
 
 	//Change the General Speaking using a FString text parameter
 	UFUNCTION(BlueprintCallable)
 	void ChangeText(FString text);
+
+	UFUNCTION(BlueprintCallable)
+	void UdpateGeneralSpeaking(FString GeneralTalking);
+
+	void DisableSpeaking();
+
 	
 };
