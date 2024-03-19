@@ -40,6 +40,9 @@ public:
 	//for timer
 	FTimerHandle TimerHandle;
 
+	ESpawnActorCollisionHandlingMethod spawnActorCollisionHandlingMethod;
+	FActorSpawnParameters spawnParameters;
+
 
 protected:
 	// Called when the game starts or when spawned

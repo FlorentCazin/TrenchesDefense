@@ -16,6 +16,8 @@ ASpawnerEnemy::ASpawnerEnemy()
 	TimeBetweenSpawn = 1.f;
 	NumberOfIterationSpawn = 5;
 	actualIteration = 0;
+	spawnActorCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	spawnParameters.SpawnCollisionHandlingOverride = spawnActorCollisionHandlingMethod;
 }
 
 // Called when the game starts or when spawned
@@ -55,11 +57,10 @@ void ASpawnerEnemy::SpawnEnemies() {
 			random = FMath::RandRange(1, 20);
 			//configurer param spawn pour always spawn
 			if (random == 5) {
-				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation());
+				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[1], GetActorLocation(), GetActorRotation(), spawnParameters);
 			}
 			else {
-				GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("here"));
-				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation());
+				World->SpawnActor<ATrenchesDefenseCharacter>(EnemiesToSpawn[0], GetActorLocation(), GetActorRotation(), spawnParameters);
 			}
 			actualIteration++;
 		}
