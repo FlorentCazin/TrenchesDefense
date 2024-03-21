@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
+#include "TrenchesDefLocalPlayerSubsystem.h"
 #include "BasicInformationWidget.generated.h"
 
 
@@ -29,6 +30,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (bindWidget))
 	class UTextBlock* WaveNumber;
+
+	UTrenchesDefLocalPlayerSubsystem* PLS;
+
+protected:
+	// Called when the game starts
+	virtual void NativeOnInitialized() override;
 
 
 public:

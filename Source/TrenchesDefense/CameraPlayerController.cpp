@@ -22,6 +22,7 @@ ACameraPlayerController::ACameraPlayerController(){
 	bEnableMouseOverEvents = true;
 	ScreenBorderLimitationForCameraLocation = 50;
 	DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL = 2;
+	//GetLocalPlayer()->GetSubsystem<>();
 }
 
 
@@ -137,6 +138,7 @@ bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLoca
 			if (soldierItemRepresentation) { //Cast is correct
 				SoldierToSpawn = soldierItemRepresentation->SpawnSoldier(ItemRepresentationLocation);
 				if (SoldierToSpawn) {
+					SoldierToSpawn->PlayerLocalSubsystem = GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
 					SoldierToSpawn->ChangeSoldierEmissive(SoldierToSpawn->MaxEmissiveColor);
 					AlreadySelectingSoldier = true;
 					BlockSpawnSoldier = true;

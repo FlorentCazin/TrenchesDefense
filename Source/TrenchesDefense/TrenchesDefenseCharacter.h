@@ -9,6 +9,7 @@
 #include "SoldierDataAsset.h"
 #include "Animation/AnimationAsset.h"
 #include "GameplayTagContainer.h"
+#include "TrenchesDefLocalPlayerSubsystem.h"
 #include "TrenchesDefenseCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -74,6 +75,8 @@ public:
 	bool IsZombie = false;
 
 	FGameplayTag TeamTagFromTeamComponent;
+
+	UTrenchesDefLocalPlayerSubsystem *PlayerLocalSubsystem;
 
 protected:
 	// Called when the game starts or when spawned

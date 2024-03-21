@@ -131,9 +131,9 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 					}
 
 					//Give money
-					// if a soldier do the kill
+					//If a soldier do the kill
 					if (!characterControlled->IsZombie) {
-						//call event subsystemlocal
+						characterControlled->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(characterControlled->SoldierDataAsset->MoneyPerKill);
 					}
 				}
 				TargetsInSight.RemoveAt(TargetsInSightIndex);
