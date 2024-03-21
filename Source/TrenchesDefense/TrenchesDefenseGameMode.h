@@ -15,6 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCharacterDead, bool, IsZombie, FGa
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGeneralSpeaking, FString, GeneralTalking);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewWave, int, Wave);
 
 UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseGameMode : public AGameMode
@@ -62,6 +63,11 @@ public:
 	UPROPERTY(BlueprintAssignable, category = "GeneralWidget EventDispatcher")
 	FGeneralSpeaking GeneralSpeakingEvent;
 
+	UPROPERTY(BlueprintAssignable, category = "BasicInfo EventDispatcher")
+	FNewWave NewWaveEvent;
+
+	bool firstWave = true;
+
 
 public:
 
@@ -79,5 +85,4 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag);
-	
 };

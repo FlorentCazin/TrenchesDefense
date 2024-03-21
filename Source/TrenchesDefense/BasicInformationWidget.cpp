@@ -14,6 +14,7 @@ void UBasicInformationWidget::NativeOnInitialized() {
 	PLS->GiveMoneyEvent.AddDynamic(this, &UBasicInformationWidget::ChangeMoneyText);
 	ATrenchesDefenseGameMode* GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
 	MoneyPlayer->SetText(FText::FromString(FString::Printf(TEXT("%d"), GM->MoneyToGiveBegining)));
+	GM->NewWaveEvent.AddDynamic(this, &UBasicInformationWidget::ChangeWaveText);
 }
 
 
