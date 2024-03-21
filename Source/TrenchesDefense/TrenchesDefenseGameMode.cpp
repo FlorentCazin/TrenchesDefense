@@ -3,6 +3,7 @@
 
 #include "TrenchesDefenseGameMode.h"
 #include "GameplayTagsManager.h"
+#include "CameraPlayerController.h"
 
 void ATrenchesDefenseGameMode::BeginPlay() {
 	Super::BeginPlay();
@@ -13,6 +14,10 @@ void ATrenchesDefenseGameMode::BeginPlay() {
 	timer->InitTimer();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnerEnemy::StaticClass(), spawnerEnemies);
 	CharacterDead.AddDynamic(this, &ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos);
+
+	//if multi, use iterator
+	ACameraPlayerController *LPS = Cast<ACameraPlayerController>(GetWorld()->GetFirstPlayerController());
+	LPS->GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>()->Money = MoneyToGiveBegining;
 }
 
 

@@ -47,6 +47,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, category = "Gameplay Info")
 	bool InWave;
 
+	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	int MoneyToGiveBegining = 1000;
+
 	//Timer In Map
 	ATimerWarmup* timer;
 

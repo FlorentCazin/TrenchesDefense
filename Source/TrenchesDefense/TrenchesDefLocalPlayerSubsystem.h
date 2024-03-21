@@ -18,8 +18,6 @@ class TRENCHESDEFENSE_API UTrenchesDefLocalPlayerSubsystem : public ULocalPlayer
 
 public:
 
-	UTrenchesDefLocalPlayerSubsystem();
-
 	UPROPERTY(BlueprintReadWrite, category="Player Money")
 	int Money;
 

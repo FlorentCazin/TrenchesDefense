@@ -4,6 +4,7 @@
 #include "BasicInformationWidget.h"
 #include "Components/TextBlock.h"
 #include "CameraPlayerController.h"
+#include "TrenchesDefenseGameMode.h"
 
 
 void UBasicInformationWidget::NativeOnInitialized() {
@@ -11,6 +12,8 @@ void UBasicInformationWidget::NativeOnInitialized() {
 	ACameraPlayerController* PC = Cast<ACameraPlayerController>(GetOwningPlayerPawn()->GetController());
 	PLS = PC->GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
 	PLS->GiveMoneyEvent.AddDynamic(this, &UBasicInformationWidget::ChangeMoneyText);
+	ATrenchesDefenseGameMode* GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
+	MoneyPlayer->SetText(FText::FromString(FString::Printf(TEXT("%d"), GM->MoneyToGiveBegining)));
 }
 
 
