@@ -30,6 +30,7 @@ void ATrenchesDefenseGameMode::IncrWave() {
 }
 
 void ATrenchesDefenseGameMode::StartWave() {
+	NewWaveEvent.Broadcast(Wave);
 	InWave = true;
 	//timer
 	timer->SetActorHiddenInGame(true);
@@ -48,7 +49,7 @@ void ATrenchesDefenseGameMode::EndWave() {
 	timer->StartTimer();
 
 	if (firstWave) {
-		NewWaveEvent.Broadcast(Wave);
+		//NewWaveEvent.Broadcast(Wave);
 		FString GeneralSpeaking = FString::Printf(TEXT("Bienvenue Soldat dans Trenches Defense. Placez vos unités pour défendre votre camp, ne laissez surtout pas\
 		les zombies atteintre le bunker, et attention au chrono!"));
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
@@ -59,8 +60,8 @@ void ATrenchesDefenseGameMode::EndWave() {
 		FString GeneralSpeaking = FString::Printf(TEXT("Bravo soldat, votre bataillon a survécu a la manche %d!"), Wave);
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 		IncrWave();
-		NewWaveEvent.Broadcast(Wave);
 	}
+	EndWaveEvent.Broadcast();
 }
 
 void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag) {

@@ -17,6 +17,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGeneralSpeaking, FString, GeneralTa
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FNewWave, int, Wave);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FEndWave);
+
+
 UCLASS(Blueprintable)
 class TRENCHESDEFENSE_API ATrenchesDefenseGameMode : public AGameMode
 {
@@ -65,6 +68,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, category = "BasicInfo EventDispatcher")
 	FNewWave NewWaveEvent;
+
+	UPROPERTY(BlueprintAssignable, category = "EndWave EventDispatcher")
+	FEndWave EndWaveEvent;
 
 	bool firstWave = true;
 

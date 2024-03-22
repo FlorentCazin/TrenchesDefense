@@ -25,11 +25,14 @@ void AItemRepresentationInWorld::Tick(float DeltaTime)
 
 }
 
-ATrenchesDefenseCharacter* AItemRepresentationInWorld::SpawnSoldier(FVector CursorHitLocation) {
+ATrenchesDefenseCharacter* AItemRepresentationInWorld::SpawnSoldier(FVector CursorHitLocation, int money) {
 	if (SoldierClass) {
-		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("SoldierClass exist!"));
-		//FActorSpawnParameters SpawnParams;
-		return GetWorld()->SpawnActor<ATrenchesDefenseCharacter>(SoldierClass, CursorHitLocation, FRotator::ZeroRotator);
+		if (money >= soldierDataAsset->Cost) {
+			return GetWorld()->SpawnActor<ATrenchesDefenseCharacter>(SoldierClass, CursorHitLocation, FRotator::ZeroRotator);
+		}
+		else {
+			return nullptr;
+		}
 	}
 	else {
 		UE_LOG(LogTemp, Error, TEXT("SoldierClass is not defined"));

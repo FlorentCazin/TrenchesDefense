@@ -22,7 +22,6 @@ ACameraPlayerController::ACameraPlayerController(){
 	bEnableMouseOverEvents = true;
 	ScreenBorderLimitationForCameraLocation = 50;
 	DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL = 2;
-	//GetLocalPlayer()->GetSubsystem<>();
 }
 
 
@@ -33,6 +32,8 @@ void ACameraPlayerController::BeginPlay() {
 	CameraPlayer = Cast<ACameraPlayer>(GetPawn());
 	InitialCameraLocation = CameraPlayer->GetActorLocation();
 	InitialCameraRotation = CameraPlayer->GetActorRotation();
+	GameMode = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
+	localsub = GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
 }
 
 void ACameraPlayerController::Tick(float DeltaSeconds) {
@@ -41,27 +42,19 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 
 	float x, y;
 	if (GetMousePosition(x, y)) {
-		if (RightClickPressed) { //Ratation movement //ici faudra ajouter un boolean si on selectionne une unité ca devient le clique droit de rotation de lunité?
-			//if (AxisXPriority) { //Left Right
+		if (RightClickPressed) { //Rotation movement //ici faudra ajouter un boolean si on selectionne une unité ca devient le clique droit de rotation de lunité?
 				if (PreviousMouseLocationX < x) {
-					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers gauche"));
 					CameraPlayer->LeftAxisRotation();
 				}
 				if (PreviousMouseLocationX > x) {
-					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers droite"));
 					CameraPlayer->RightAxisRotation();
 				}
-			//}
-			//else {
 				if (PreviousMouseLocationY < y) { //Top Down
-					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers haut"));
 					CameraPlayer->TopAxisRotation();
 				}
 				if (PreviousMouseLocationY > y) {
-					//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("go vers bas"));
 					CameraPlayer->DownAxisRotation();
 				}
-			//}
 		}
 		else { //Axis movement
 			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY()); //take the max X,Y of the game screen
@@ -90,36 +83,52 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 
 	//Spawning system
 	if (AlreadySelectingSoldier) { //Execute only if the player is playing the spawning system
-		FVector HitImpactLocation = FVector(0.f,0.f,0.f);
-		TArray<FHitResult> hitResult = TickGetMultiLineTraceByChannel();
-		for (auto& Hit : hitResult) {
-			HitImpactLocation = Hit.ImpactPoint;
-			NumberOfHitedElementForOverlap++; //incr this variable to know how hitresult by multi line trace
-			OverlapSoldierIsInLimitation = false; //reset overlap value for each multi trace line by channel (to know if it's red or green)
-			if (SoldierIsPlaced) { //if the player is in the Rotation step
-				if (Hit.bBlockingHit) { //looking the last Hit to rotate, avoid bug with cone previsualization
-					TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
-				}
-			}
-			else { //so the player is in the overlap step
-				if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
-					if (!OverlapSoldierIsInLimitation) { //if not already, avoid doing useless actions if it's already done
-						OverlapSoldierIsInLimitation = true;
-						//inside color
-						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorInsideLimitation);
+		//if (!GameMode->InWave) {
+			FVector HitImpactLocation = FVector(0.f, 0.f, 0.f);
+			TArray<FHitResult> hitResult = TickGetMultiLineTraceByChannel();
+			for (auto& Hit : hitResult) {
+				HitImpactLocation = Hit.ImpactPoint;
+				NumberOfHitedElementForOverlap++; //incr this variable to know how hitresult by multi line trace
+				OverlapSoldierIsInLimitation = false; //reset overlap value for each multi trace line by channel (to know if it's red or green)
+				if (SoldierIsPlaced) { //if the player is in the Rotation step
+					if (Hit.bBlockingHit) { //looking the last Hit to rotate, avoid bug with cone previsualization
+						TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
 					}
 				}
-				else { //if the player is out of the soldier box spawning limitation
-					if (NumberOfHitedElementForOverlap == DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL) { //If we are at the end of the for loop
-						//Outside color
-						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorOutOfLimitation);
+				else { //so the player is in the overlap step
+					if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
+						if (!OverlapSoldierIsInLimitation) { //if not already, avoid doing useless actions if it's already done
+							OverlapSoldierIsInLimitation = true;
+							//inside color
+							SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorInsideLimitation);
+						}
+					}
+					else { //if the player is out of the soldier box spawning limitation
+						if (NumberOfHitedElementForOverlap == DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL) { //If we are at the end of the for loop
+							//Outside color
+							SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorOutOfLimitation);
+						}
 					}
 				}
 			}
-		}
-		NumberOfHitedElementForOverlap = 0; //Reset for each loop executed
-		TickMoveActorForPrevisualizationDuringOverlap(HitImpactLocation); //Soldier follow the cursor
+			NumberOfHitedElementForOverlap = 0; //Reset for each loop executed
+			TickMoveActorForPrevisualizationDuringOverlap(HitImpactLocation); //Soldier follow the cursor
+		//}
+		/*else {
+			//in wave
+			if (SoldierToSpawn && !SoldierToSpawn->AlreadySpawned) {
+				//refund
+				SoldierToSpawn->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(SoldierToSpawn->SoldierDataAsset->Cost);
+				//destroy
+				SoldierToSpawn->Destroy();
+			}
+			else {
+				SoldierToSpawn->SetActorLocation(SaveSpawnActorValue);
+			}
+		}*/
 	}
+
+		
 }
 
 void ACameraPlayerController::ResetCameraLocation() {
@@ -129,29 +138,34 @@ void ACameraPlayerController::ResetCameraLocation() {
 
 
 bool ACameraPlayerController::OnClickSpawnSoldier(FVector ItemRepresentationLocation) {
-	//Set intensity soldier intense
-
-	//If the player is not already using the spawing/edit functionality and the HitActor is a AItemRepresentationInWorld
-	if (!AlreadySelectingSoldier && !BlockSpawnSoldier && ActorHited && ActorHited->IsA(AItemRepresentationInWorld::StaticClass())) {
-		try{ //try here is useless like we check if IsA(AItemRepresentationInWorld), but it's to have an idea of how LOG and exception could be used.
-			AItemRepresentationInWorld *soldierItemRepresentation = Cast<AItemRepresentationInWorld>(ActorHited);
-			if (soldierItemRepresentation) { //Cast is correct
-				SoldierToSpawn = soldierItemRepresentation->SpawnSoldier(ItemRepresentationLocation);
-				if (SoldierToSpawn) {
-					SoldierToSpawn->PlayerLocalSubsystem = GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
-					SoldierToSpawn->ChangeSoldierEmissive(SoldierToSpawn->MaxEmissiveColor);
-					AlreadySelectingSoldier = true;
-					BlockSpawnSoldier = true;
-					return true;
+	if (!GameMode->InWave) { //Can use this system only if the wave is not started
+		//If the player is not already using the spawing/edit functionality and the HitActor is a AItemRepresentationInWorld
+		if (!AlreadySelectingSoldier && !BlockSpawnSoldier && ActorHited && ActorHited->IsA(AItemRepresentationInWorld::StaticClass())) {
+			try{ //try here is useless like we check if IsA(AItemRepresentationInWorld), but it's to have an idea of how LOG and exception could be used.
+				AItemRepresentationInWorld *soldierItemRepresentation = Cast<AItemRepresentationInWorld>(ActorHited);
+				if (soldierItemRepresentation) { //Cast is correct
+					//donner le subsystem peut etre pour savoir si on spawn ou pas si pas argent
+					SoldierToSpawn = soldierItemRepresentation->SpawnSoldier(ItemRepresentationLocation, localsub->Money);
+					if (SoldierToSpawn) {
+						SoldierToSpawn->PlayerLocalSubsystem = localsub;
+						SoldierToSpawn->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(-(SoldierToSpawn->SoldierDataAsset->Cost));
+						SoldierToSpawn->ChangeSoldierEmissive(SoldierToSpawn->MaxEmissiveColor);
+						AlreadySelectingSoldier = true;
+						BlockSpawnSoldier = true;
+						return true;
+					}
+					else {
+						//no money
+					}
+				}
+				else {
+					//Error during the cast
+					UE_LOG(LogTemp, Log, TEXT("Cast to ItemRepresentationInWorld problem"));
 				}
 			}
-			else {
-				//Error during the cast
-				UE_LOG(LogTemp, Log, TEXT("Cast to ItemRepresentationInWorld problem"));
+			catch (const std::exception& e){ //Exception throwed
+				UE_LOG(LogTemp, Log, TEXT("Exception: %s"), *FString(e.what()));
 			}
-		}
-		catch (const std::exception& e){ //Exception throwed
-			UE_LOG(LogTemp, Log, TEXT("Exception: %s"), *FString(e.what()));
 		}
 	}
 	return false;
@@ -248,6 +262,7 @@ void ACameraPlayerController::TickMoveActorForPrevisualizationDuringOverlap(FVec
 	}
 }
 
+//to do
 void ACameraPlayerController::ProblemSpawningActorResetValues() {
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("ProblemSpawningActorResetValues"));
 	ClickSpawningSoldierIsInLimitation = false;
@@ -322,46 +337,49 @@ TArray<FHitResult> ACameraPlayerController::TickGetMultiLineTraceByChannel() {
 }
 
 void ACameraPlayerController::OnLeftClick() {
-	TArray<FHitResult> HitResult = OnClickGetMultiLineTraceByChannel();
-	for (auto& Hit : HitResult) {
-		ActorHited = Hit.GetActor();
-		FVector HitLocation = Hit.ImpactPoint; //impact location
-		if (!OnClickSpawnSoldier(HitLocation)) { //try if the player Click on item representation to spawn soldier
-			if (!OnClickSoldierToMove()) {  //try if the player Click on soldier already spawned
-				OnClickInitFinalActorLocation(HitLocation); //try if the player already selected a soldier and click to choose the final location
-			}
-		}
-	}
-	if (ClickSpawningSoldierIsInLimitation && !SoldierIsPlaced) { //îf we're finished the for loop, and we have selected the final location, set the location
-		OnClickSetFinalActorLocation();
-		//change color to default
-		SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
-	}
-	else {
-		if (SoldierIsPlaced) { //if the player is in the rotation step
-			AlreadySelectingSoldier = false;
-			SoldierIsPlaced = false;
-			ClickSpawningSoldierIsInLimitation = false;
-
-			//spawn at SoldierDefaultSpawn actor location
-			UWorld* World = GetWorld(); //world reference
-			AActor* spawnActor = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
-			if (spawnActor) {
-				SoldierToSpawn->ChangeSoldierEmissive(0.f);
-				SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
-				spawnActor->SetActorLocation(SaveSpawnActorValue);
-				//AI
-				ATrenchesDefenseAIController* SoldierController = Cast<ATrenchesDefenseAIController>(SoldierToSpawn->Controller);
-				if (SoldierController) {
-					SoldierController->MoveCharacterToLocationAndRotate(SpawningSoldierLocation, FRotator(0.f, SoldierSavedZRotation, 0.f));
-					BlockSpawnSoldier = false;
-					SoldierToSpawn->AlreadySpawned = true;
-					SoldierToSpawn = nullptr;
+	//|| (GameMode->InWave && SoldierToSpawn!=nullptr) because can't fix spawn system during wave in time
+	if (!GameMode->InWave || (GameMode->InWave && SoldierToSpawn!=nullptr)) {
+		TArray<FHitResult> HitResult = OnClickGetMultiLineTraceByChannel();
+		for (auto& Hit : HitResult) {
+			ActorHited = Hit.GetActor();
+			FVector HitLocation = Hit.ImpactPoint; //impact location
+			if (!OnClickSpawnSoldier(HitLocation)) { //try if the player Click on item representation to spawn soldier
+				if (!OnClickSoldierToMove()) {  //try if the player Click on soldier already spawned
+					OnClickInitFinalActorLocation(HitLocation); //try if the player already selected a soldier and click to choose the final location
 				}
 			}
-			else { //spawning default actor does not exist
-				UE_LOG(LogTemp, Log, TEXT("Soldier spawning default acrot does not exist!"))
-				ProblemSpawningActorResetValues();
+		}
+		if (ClickSpawningSoldierIsInLimitation && !SoldierIsPlaced) { //îf we're finished the for loop, and we have selected the final location, set the location
+			OnClickSetFinalActorLocation();
+			//change color to default
+			SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->DefaultColor);
+		}
+		else {
+			if (SoldierIsPlaced) { //if the player is in the rotation step
+				AlreadySelectingSoldier = false;
+				SoldierIsPlaced = false;
+				ClickSpawningSoldierIsInLimitation = false;
+
+				//spawn at SoldierDefaultSpawn actor location
+				UWorld* World = GetWorld(); //world reference
+				AActor* spawnActor = UGameplayStatics::GetActorOfClass(World, ASoldierDefaultSpawn::StaticClass());
+				if (spawnActor) {
+					SoldierToSpawn->ChangeSoldierEmissive(0.f);
+					SoldierToSpawn->SetActorLocation(spawnActor->GetActorLocation());
+					spawnActor->SetActorLocation(SaveSpawnActorValue);
+					//AI
+					ATrenchesDefenseAIController* SoldierController = Cast<ATrenchesDefenseAIController>(SoldierToSpawn->Controller);
+					if (SoldierController) {
+						SoldierController->MoveCharacterToLocationAndRotate(SpawningSoldierLocation, FRotator(0.f, SoldierSavedZRotation, 0.f));
+						BlockSpawnSoldier = false;
+						SoldierToSpawn->AlreadySpawned = true;
+						SoldierToSpawn = nullptr;
+					}
+				}
+				else { //spawning default actor does not exist
+					UE_LOG(LogTemp, Log, TEXT("Soldier spawning default acrot does not exist!"))
+						ProblemSpawningActorResetValues();
+				}
 			}
 		}
 	}
@@ -376,8 +394,9 @@ void ACameraPlayerController::OnClickCancelLastAction() {
 			BlockSpawnSoldier = false;
 			AlreadySelectingSoldier = false;
 			if (!SoldierToSpawn->AlreadySpawned) {
+				//refund
+				SoldierToSpawn->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(SoldierToSpawn->SoldierDataAsset->Cost);
 				SoldierToSpawn->Destroy();
-				//refind le player
 			}
 			else { //problems, in progress
 				//spawn at SoldierDefaultSpawn actor location

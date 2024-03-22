@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "CameraPlayer.h"
 #include "TrenchesDefenseCharacter.h"
+#include "TrenchesDefenseGameMode.h"
 #include "CameraPlayerController.generated.h"
 
 /**
@@ -99,6 +100,10 @@ public:
 	//Max possible iteration, usefull to change the soldat's color, necessary because of the trace multi line by channel
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
 	int DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL;
+
+	ATrenchesDefenseGameMode* GameMode;
+
+	UTrenchesDefLocalPlayerSubsystem* localsub;
 
 
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TrenchesDefenseCharacter.h"
+#include "SoldierDataAsset.h"
 #include "ItemRepresentationInWorld.generated.h"
 
 UCLASS(Blueprintable)
@@ -19,6 +20,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SoldierToSpawnItemRepresentation")
 	TSubclassOf<ATrenchesDefenseCharacter> SoldierClass;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SoldierToSpawnItemRepresentation")
+	USoldierDataAsset* soldierDataAsset;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -28,6 +32,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	ATrenchesDefenseCharacter* SpawnSoldier(FVector CursorHitLocation);
+	ATrenchesDefenseCharacter* SpawnSoldier(FVector CursorHitLocation, int money);
 
 };
