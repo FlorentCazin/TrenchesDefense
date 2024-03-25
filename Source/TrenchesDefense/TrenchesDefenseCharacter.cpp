@@ -21,7 +21,8 @@ void ATrenchesDefenseCharacter::BeginPlay()
 	LifeComponent->LifeInitialization = MaxLife;
 	LifeComponent->RegenerateLife();
 	CharacterMesh = GetMesh();
-	TeamTagFromTeamComponent = CharacterDataAsset->CharacterTeamComponent->TeamTag;
+	//avoid crash
+	if(CharacterDataAsset) 	TeamTagFromTeamComponent = CharacterDataAsset->CharacterTeamComponent->TeamTag;
 }
 
 // Called every frame

@@ -8,6 +8,7 @@
 #include "TrenchesDefenseCharacter.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "TrenchesDefLocalPlayerSubsystem.h"
+#include "TrencheToExplore.h"
 #include "TrenchesDefenseAIController.generated.h"
 
 /**
@@ -41,6 +42,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, category = "AIControllerAttack")
 	bool alreadyHasLineOfSight;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	ATrencheToExplore* TrencheChosenToExplore;
 	
 
 protected:

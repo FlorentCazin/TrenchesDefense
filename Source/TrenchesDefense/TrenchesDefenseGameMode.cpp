@@ -3,6 +3,7 @@
 
 #include "TrenchesDefenseGameMode.h"
 #include "GameplayTagsManager.h"
+#include "TrenchesSelector.h"
 #include "CameraPlayerController.h"
 
 void ATrenchesDefenseGameMode::BeginPlay() {
@@ -60,6 +61,13 @@ void ATrenchesDefenseGameMode::EndWave() {
 		FString GeneralSpeaking = FString::Printf(TEXT("Bravo soldat, votre bataillon a survécu a la manche %d!"), Wave);
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 		IncrWave();
+
+		//trencheAISystem set new values
+		AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
+		if (trencheSelectorActor) {
+			ATrenchesSelector* trencheSelector = Cast<ATrenchesSelector>(trencheSelectorActor);
+			trencheSelector->SetTrenchesValues();
+		}
 	}
 	EndWaveEvent.Broadcast();
 }

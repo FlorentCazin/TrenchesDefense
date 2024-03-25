@@ -15,6 +15,7 @@
 #include "Containers/Array.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TrenchesDefenseGameMode.h"
+#include "TrenchesSelector.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -191,6 +192,16 @@ void ATrenchesDefenseAIController::Die() {
 	ATrenchesDefenseGameMode *GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
 	if (GM) {
 		GM->CharacterDead.Broadcast(characterControlled->IsZombie, characterControlled->CharacterDataAsset->CharacterTeamComponent->TeamTag);
+	}
+	if (TrencheChosenToExplore) {
+		TrencheChosenToExplore->ActualNumberInsideTrenche--;
+		if (TrencheChosenToExplore->ActualNumberInsideTrenche == 0) {
+			AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
+			if (trencheSelectorActor) {
+				ATrenchesSelector* trencheSelector = Cast<ATrenchesSelector>(trencheSelectorActor);
+				trencheSelector->TrencheToExploreOrderScoreArray.Add(TrencheChosenToExplore);
+			}
+		}
 	}
 	UnPossess();
 	characterControlled->Destroy();
