@@ -31,6 +31,14 @@ void ATrenchesDefenseGameMode::IncrWave() {
 }
 
 void ATrenchesDefenseGameMode::StartWave() {
+
+	//trencheAISystem set new values
+	AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
+	if (trencheSelectorActor) {
+		ATrenchesSelector* trencheSelector = Cast<ATrenchesSelector>(trencheSelectorActor);
+		trencheSelector->SetTrenchesValues();
+	}
+
 	NewWaveEvent.Broadcast(Wave);
 	InWave = true;
 	//timer
@@ -62,12 +70,7 @@ void ATrenchesDefenseGameMode::EndWave() {
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 		IncrWave();
 
-		//trencheAISystem set new values
-		AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
-		if (trencheSelectorActor) {
-			ATrenchesSelector* trencheSelector = Cast<ATrenchesSelector>(trencheSelectorActor);
-			trencheSelector->SetTrenchesValues();
-		}
+		
 	}
 	EndWaveEvent.Broadcast();
 }

@@ -46,18 +46,22 @@ void ATrenchesSelector::Tick(float DeltaTime)
 }
 
 void ATrenchesSelector::SetTrenchesValues() {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("here settrenchesvalues"));
 	// t0 => give 50% to t4
 	//t1 => give 25% to t3
 	//t2 don't move
 	// should stay 2 enemies minimum / trenches
 
+	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Purple, FString::Printf(TEXT("number: %d"), TrencheToExploreOrderScoreArray.Num()));
+
+
 	if (TrencheToExploreOrderScoreArray.Num() == 5) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("inside if"));
 		GiveToTrenche(TrencheToExploreOrderScoreArray[0], TrencheToExploreOrderScoreArray[4], 0.5);
 		GiveToTrenche(TrencheToExploreOrderScoreArray[1], TrencheToExploreOrderScoreArray[3], 0.25);
-
-		//reset array
-		TrencheToExploreOrderScoreArray.Reset();
 	}
+	//reset array
+	TrencheToExploreOrderScoreArray.Reset();
 
 	
 }

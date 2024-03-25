@@ -21,7 +21,7 @@ public:
 	TArray<ATrencheToExplore*> TrenchesToExploreArray;
 
 	//Score from previous round of the trenches
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<ATrencheToExplore*> TrencheToExploreOrderScoreArray;
 
 	//total trenche
