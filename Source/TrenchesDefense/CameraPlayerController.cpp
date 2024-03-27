@@ -83,49 +83,35 @@ void ACameraPlayerController::Tick(float DeltaSeconds) {
 
 	//Spawning system
 	if (AlreadySelectingSoldier) { //Execute only if the player is playing the spawning system
-		//if (!GameMode->InWave) {
-			FVector HitImpactLocation = FVector(0.f, 0.f, 0.f);
-			TArray<FHitResult> hitResult = TickGetMultiLineTraceByChannel();
-			for (auto& Hit : hitResult) {
-				HitImpactLocation = Hit.ImpactPoint;
-				NumberOfHitedElementForOverlap++; //incr this variable to know how hitresult by multi line trace
-				OverlapSoldierIsInLimitation = false; //reset overlap value for each multi trace line by channel (to know if it's red or green)
-				if (SoldierIsPlaced) { //if the player is in the Rotation step
-					if (Hit.bBlockingHit) { //looking the last Hit to rotate, avoid bug with cone previsualization
-						TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
+		FVector HitImpactLocation = FVector(0.f, 0.f, 0.f);
+		TArray<FHitResult> hitResult = TickGetMultiLineTraceByChannel();
+		for (auto& Hit : hitResult) {
+			HitImpactLocation = Hit.ImpactPoint;
+			NumberOfHitedElementForOverlap++; //incr this variable to know how hitresult by multi line trace
+			OverlapSoldierIsInLimitation = false; //reset overlap value for each multi trace line by channel (to know if it's red or green)
+			if (SoldierIsPlaced) { //if the player is in the Rotation step
+				if (Hit.bBlockingHit) { //looking the last Hit to rotate, avoid bug with cone previsualization
+					TickSetRotationFollowingCursor(HitImpactLocation); //taking the cursor for the rotation each ticks
+				}
+			}
+			else { //so the player is in the overlap step
+				if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
+					if (!OverlapSoldierIsInLimitation) { //if not already, avoid doing useless actions if it's already done
+						OverlapSoldierIsInLimitation = true;
+						//inside color
+						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorInsideLimitation);
 					}
 				}
-				else { //so the player is in the overlap step
-					if (Hit.GetActor()->IsA(ALimitationSoldiersSpawningZone::StaticClass()) && AlreadySelectingSoldier) { //If we overlap the spawing limitation and the player have a soldier selected
-						if (!OverlapSoldierIsInLimitation) { //if not already, avoid doing useless actions if it's already done
-							OverlapSoldierIsInLimitation = true;
-							//inside color
-							SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorInsideLimitation);
-						}
-					}
-					else { //if the player is out of the soldier box spawning limitation
-						if (NumberOfHitedElementForOverlap == DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL) { //If we are at the end of the for loop
-							//Outside color
-							SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorOutOfLimitation);
-						}
+				else { //if the player is out of the soldier box spawning limitation
+					if (NumberOfHitedElementForOverlap == DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL) { //If we are at the end of the for loop
+						//Outside color
+						SoldierToSpawn->ChangeSoldierColor(SoldierToSpawn->ColorOutOfLimitation);
 					}
 				}
 			}
-			NumberOfHitedElementForOverlap = 0; //Reset for each loop executed
-			TickMoveActorForPrevisualizationDuringOverlap(HitImpactLocation); //Soldier follow the cursor
-		//}
-		/*else {
-			//in wave
-			if (SoldierToSpawn && !SoldierToSpawn->AlreadySpawned) {
-				//refund
-				SoldierToSpawn->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(SoldierToSpawn->SoldierDataAsset->Cost);
-				//destroy
-				SoldierToSpawn->Destroy();
-			}
-			else {
-				SoldierToSpawn->SetActorLocation(SaveSpawnActorValue);
-			}
-		}*/
+		}
+		NumberOfHitedElementForOverlap = 0; //Reset for each loop executed
+		TickMoveActorForPrevisualizationDuringOverlap(HitImpactLocation); //Soldier follow the cursor
 	}
 
 		
@@ -215,12 +201,6 @@ void ACameraPlayerController::OnClickInitFinalActorLocation(FVector ActorLocatio
 			//set the final location of the soldier
 			SpawningSoldierLocation = ActorLocation;
 		}
-		else {
-			if (AlreadySelectingSoldier && !SoldierIsPlaced) {
-				//WIDGET TO SHOW OUT OF LIMITATION
-			}
-			//else simple click
-		}
 	}
 }
 
@@ -275,7 +255,7 @@ void ACameraPlayerController::ProblemSpawningActorResetValues() {
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("Soldier destroyed"));
 	}*/
 	//Call widget refund player?
-	UE_LOG(LogTemp, Log, TEXT("Fail, destroying actor, reset values, refund Player!"))
+	UE_LOG(LogTemp, Log, TEXT("Fail, destroying actor, reset values, refund Player!"));
 }
 
 TArray<FHitResult> ACameraPlayerController::OnClickGetMultiLineTraceByChannel() {
@@ -337,7 +317,7 @@ TArray<FHitResult> ACameraPlayerController::TickGetMultiLineTraceByChannel() {
 }
 
 void ACameraPlayerController::OnLeftClick() {
-	//|| (GameMode->InWave && SoldierToSpawn!=nullptr) because can't fix spawn system during wave in time
+	//if we are not in wave or, in wave but already selecting a soldier
 	if (!GameMode->InWave || (GameMode->InWave && SoldierToSpawn!=nullptr)) {
 		TArray<FHitResult> HitResult = OnClickGetMultiLineTraceByChannel();
 		for (auto& Hit : HitResult) {

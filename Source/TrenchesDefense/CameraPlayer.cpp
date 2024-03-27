@@ -113,15 +113,6 @@ void ACameraPlayer::DownAxisMovement() { //X
     GetWorldTimerManager().SetTimer(TimerHandle4, this, &ACameraPlayer::DelayedReintialiseBooleanLimitationCameraBottom, Delay, false);
 }
 
-/* PROBLEME QUAND JUTILISE DIRECTEMENT WORLD LOCATION SI JE PIVOTE CA RESPECTE PLUS LAXE
-void ACameraPlayer::DownAxisMovement() {
-    FVector locationCamera = GetActorLocation();
-    locationCamera.X -= CameraSpeed;
-    SetActorLocation(locationCamera);
-}*/
-
-//ROTATION: X=ROLL Y=PITCH Z=YAW
-
 void ACameraPlayer::LeftAxisRotation() { //-Y
     FRotator RotationLocal(0.f, -CameraSpeedRotation, 0.f);
     SetActorRotation(GetActorRotation() + RotationLocal);

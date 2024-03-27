@@ -25,10 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
 	bool RightClickPressed;
 
-	//Priority of the axe used
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
-	bool AxisXPriority;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="CameraInputsAction")
 	float PreviousMouseLocationX;
 
@@ -48,7 +44,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "SoldierSpawningSystem")
 	FRotator InitialCameraRotation;
 
-	//Spawning soldier variables
+	//Spawning system soldier variables
 	
 	UPROPERTY(BlueprintReadOnly, Category = "SoldierSpawningSystem")
 	FRotator InitialSoldierSelectedRotation;
@@ -101,8 +97,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SoldierSpawningSystem")
 	int DEFINE_MAX_ITERATION_POSSIBLE_GIVED_BY_VISIBLE_HIT_BY_CHANNEL;
 
+	//saving the actual gamemode
 	ATrenchesDefenseGameMode* GameMode;
 
+	//saving the actual localsubsystem
 	UTrenchesDefLocalPlayerSubsystem* localsub;
 
 

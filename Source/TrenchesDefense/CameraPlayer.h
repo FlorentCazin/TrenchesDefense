@@ -51,11 +51,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraInputsAction")
 	float CameraSpeedRotation;
 
-
-	//la hauteur max de la camera c sa position de debut.
-	//on aura la possibilité de zoomer et tourner
-	//de se déplacer dans axe donné
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -102,6 +97,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UnZoom();
 
+	//for the max limitation (camera going previous position)
 	void DelayedReintialiseBooleanLimitationCameraTop();
 	void DelayedReintialiseBooleanLimitationCameraBottom();
 	void DelayedReintialiseBooleanLimitationCameraLeft();
