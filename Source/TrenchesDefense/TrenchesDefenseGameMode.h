@@ -8,6 +8,7 @@
 #include "TimerWarmup.h"
 #include "SpawnerEnemy.h"
 #include "GeneralSoldierSpeakingWidget.h"
+#include "TrenchesDefenseGameInstance.h"
 #include "TrenchesDefenseGameMode.generated.h"
 
 
@@ -77,6 +78,9 @@ public:
 
 	//used for general first speaking
 	bool firstWave = true;
+
+	//Game Instance
+	UTrenchesDefenseGameInstance* GI;
 
 
 public:

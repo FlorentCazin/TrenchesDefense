@@ -19,6 +19,8 @@ void ATrenchesDefenseGameMode::BeginPlay() {
 	//if multi, use iterator
 	ACameraPlayerController *LPS = Cast<ACameraPlayerController>(GetWorld()->GetFirstPlayerController());
 	LPS->GetLocalPlayer()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>()->Money = MoneyToGiveBegining;
+
+	GI = Cast<UTrenchesDefenseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 }
 
 
@@ -31,6 +33,8 @@ void ATrenchesDefenseGameMode::IncrWave() {
 }
 
 void ATrenchesDefenseGameMode::StartWave() {
+
+	GI->TotalWave = Wave;
 
 	//trencheAISystem set new values, deep learning
 	AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
