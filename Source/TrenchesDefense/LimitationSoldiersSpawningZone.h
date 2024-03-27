@@ -16,6 +16,7 @@ public:
 	// Sets default values for this actor's properties
 	ALimitationSoldiersSpawningZone();
 
+	//limitation
 	UPROPERTY(BlueprintReadOnly)
 	UBoxComponent* BoxLimitation;
 

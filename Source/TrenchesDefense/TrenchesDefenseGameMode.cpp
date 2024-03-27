@@ -59,14 +59,14 @@ void ATrenchesDefenseGameMode::EndWave() {
 
 	if (firstWave) {
 		//NewWaveEvent.Broadcast(Wave);
-		FString GeneralSpeaking = FString::Printf(TEXT("Bienvenue Soldat dans Trenches Defense. Placez vos unités pour défendre votre camp, ne laissez surtout pas\
+		FString GeneralSpeaking = FString::Printf(TEXT("Bienvenue Soldat dans Trenches Defense. Placez vos unites pour defendre votre camp, ne laissez surtout pas\
 		les zombies atteintre le bunker, et attention au chrono!"));
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 		firstWave = false;
 	}
 	else {
 		//General Speaking
-		FString GeneralSpeaking = FString::Printf(TEXT("Bravo soldat, votre bataillon a survécu a la manche %d!"), Wave);
+		FString GeneralSpeaking = FString::Printf(TEXT("Bravo soldat, votre bataillon a survecu a la manche %d!"), Wave);
 		GeneralSpeakingEvent.Broadcast(GeneralSpeaking);
 		IncrWave();
 

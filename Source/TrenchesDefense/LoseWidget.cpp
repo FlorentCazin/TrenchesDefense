@@ -16,7 +16,7 @@ void ULoseWidget::NativeOnInitialized() {
 
 void ULoseWidget::TotalWaveMessage() {
 	UTrenchesDefenseGameInstance* GI = Cast<UTrenchesDefenseGameInstance>(GetGameInstance());
-	FString WaveMessageTmp = FString::Printf(TEXT("Votre bataillon a survécu jusqu'à la manche %d"), GI->TotalWave);
+	FString WaveMessageTmp = FString::Printf(TEXT("Votre bataillon a survecu jusqu'a la manche %d"), GI->TotalWave);
 	MessageWave->SetText(FText::FromString(WaveMessageTmp));
 	GI->initDefaultValueGameInstance();
 }

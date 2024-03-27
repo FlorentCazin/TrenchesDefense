@@ -16,6 +16,7 @@ public:
 	// Sets default values for this actor's properties
 	AObjectifToReach();
 
+	//team tag
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, category="ObjectifToReachTeam")
 	FGameplayTag teamTag;
 

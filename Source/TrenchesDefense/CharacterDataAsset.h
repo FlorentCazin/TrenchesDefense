@@ -36,6 +36,6 @@ public:
 	float AttackSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CharacterPropertiesDataAsset")
-	float AttackDamage; //peut etre pas dans dataasset vu que selon le type de soldat ca change, le mettre en parametre simplement du character pour lediter selon le type de soldat/zombie
+	float AttackDamage; 
 	
 };

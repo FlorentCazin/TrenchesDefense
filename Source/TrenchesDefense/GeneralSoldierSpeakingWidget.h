@@ -17,8 +17,6 @@ class TRENCHESDEFENSE_API UGeneralSoldierSpeakingWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
-	//Juste pour essayer, gerer le francais et langlais en utilisant un tableau avec translation
 	
 	UPROPERTY(BlueprintReadWrite, meta = (bindWidget), category = "WidgetGeneral")
 	class UTextBlock *GeneralSpeaking;

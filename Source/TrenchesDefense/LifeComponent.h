@@ -21,6 +21,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "LifeProperties")
 	int LifeInitialization;
 
+	//current life
 	UPROPERTY(BlueprintReadOnly, Category = "LifeProperties")
 	int Life;
 

@@ -5,7 +5,6 @@
 // Sets default values
 ACameraPlayerLimitation::ACameraPlayerLimitation()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create BoxComponent to represent the volume
@@ -17,7 +16,7 @@ ACameraPlayerLimitation::ACameraPlayerLimitation()
 	ZoneVolume->SetRelativeRotation(FRotator::ZeroRotator);
 	ZoneVolume->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 
-	// Bind event for when other actors overlap with this volume
+	// Bind event for when other actors end overlap with this volume
 	ZoneVolume->OnComponentEndOverlap.AddDynamic(this, &ACameraPlayerLimitation::OnOverlapEnd);
 }
 
@@ -37,7 +36,7 @@ void ACameraPlayerLimitation::Tick(float DeltaTime)
 
 }
 
-
+//using endoverlap for performance, less events generated than on overlap
 void ACameraPlayerLimitation::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){
 	if (OtherActor && OtherActor->IsA(ACameraPlayer::StaticClass())) {
 		ACameraPlayer* CameraPlayerTmp = Cast<ACameraPlayer>(OtherActor);
@@ -45,6 +44,7 @@ void ACameraPlayerLimitation::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, 
 		if (CameraPlayerTmp->CameraGoingRight) CameraPlayerTmp->LimitReachedRight = true;
 		if (CameraPlayerTmp->CameraGoingTop) CameraPlayerTmp->LimitReachedTop = true;
 		if (CameraPlayerTmp->CameraGoingBottom) CameraPlayerTmp->LimitReachedBottom = true;
+		//previous position, rollback
 		CameraPlayerTmp->SetActorLocation(CameraPlayerTmp->PreviousLocation);
 	}
 }

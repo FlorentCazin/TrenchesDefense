@@ -12,7 +12,7 @@ void UPreviewCharacterWidget::SetPreviewValuesFromCharacter(ATrenchesDefenseChar
 	ULifeComponent *lifeComponent = character->LifeComponent;
 	FString DmgTmp = FString::Printf(TEXT("ERROR DMG"));
 	FString LifeTmp = FString::Printf(TEXT("%d/%d"), lifeComponent->Life, lifeComponent->LifeInitialization);
-	if(WeaponComponent)	DmgTmp = FString::Printf(TEXT("%d DMG"), static_cast<int>(character->CharacterDataAsset->AttackDamage)); //maybe to change, no cast and get juste 2 digits
+	if(WeaponComponent)	DmgTmp = FString::Printf(TEXT("%d DMG"), static_cast<int>(character->CharacterDataAsset->AttackDamage));
 	FString HSTmp = FString::Printf(TEXT("%d%%HS"), WeaponComponent->HeadShotPrecisionPercentage);
 
 	LifeText->SetText(FText::FromString(LifeTmp));
@@ -26,6 +26,7 @@ void UPreviewCharacterWidget::ChangeProgressBarColor(int life) {
 	LifeProgressBar->SetPercent(static_cast<float>(life));
 	int highLevelLife = life - (life / 3);
 	int lowLevelLife = life / 3;
+	//change color
 	if (life >= highLevelLife) LifeProgressBar->SetFillColorAndOpacity(HighLifeColor);
 	else if(life>lowLevelLife) LifeProgressBar->SetFillColorAndOpacity(MiddleLifeColor);
 	else LifeProgressBar->SetFillColorAndOpacity(LowLifeColor);

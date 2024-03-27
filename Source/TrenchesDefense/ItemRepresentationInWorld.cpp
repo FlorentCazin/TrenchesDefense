@@ -30,7 +30,7 @@ ATrenchesDefenseCharacter* AItemRepresentationInWorld::SpawnSoldier(FVector Curs
 		if (money >= soldierDataAsset->Cost) {
 			return GetWorld()->SpawnActor<ATrenchesDefenseCharacter>(SoldierClass, CursorHitLocation, FRotator::ZeroRotator);
 		}
-		else {
+		else { //no money
 			return nullptr;
 		}
 	}

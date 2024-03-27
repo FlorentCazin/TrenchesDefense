@@ -17,9 +17,11 @@ public:
 	// Sets default values for this actor's properties
 	ACameraPlayerLimitation();
 
+	//zone
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="LimitationCameraPlayer")
 	UBoxComponent *ZoneVolume;
 
+	//Get the player
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "LimitationCameraPlayer")
 	ACameraPlayer* CameraPlayer;
 
@@ -32,6 +34,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+
+	//out of limitation
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	

@@ -17,9 +17,11 @@ public:
 	// Sets default values for this actor's properties
 	AItemRepresentationInWorld();
 
+	//class to spawn from the item
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category="SoldierToSpawnItemRepresentation")
 	TSubclassOf<ATrenchesDefenseCharacter> SoldierClass;
 
+	//soldierdataasset of the soldier to spawn
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SoldierToSpawnItemRepresentation")
 	USoldierDataAsset* soldierDataAsset;
 
