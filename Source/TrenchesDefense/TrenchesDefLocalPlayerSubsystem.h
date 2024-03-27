@@ -18,9 +18,11 @@ class TRENCHESDEFENSE_API UTrenchesDefLocalPlayerSubsystem : public ULocalPlayer
 
 public:
 
+	//Actual money
 	UPROPERTY(BlueprintReadWrite, category="Player Money")
 	int Money;
 
+	//bind to receive/remove money
 	UPROPERTY(BlueprintAssignable, category = "TrenchesDefLocalPlayerSubsystem EventDispatcher")
 	FGiveMoney GiveMoneyEvent;
 

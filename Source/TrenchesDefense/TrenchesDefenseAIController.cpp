@@ -49,7 +49,6 @@ void ATrenchesDefenseAIController::OnPossess(APawn *InPawn) {
 	Super::OnPossess(InPawn);
 	RunBehaviorTree(BehaviorTree);
 	characterControlled = Cast<ATrenchesDefenseCharacter>(InPawn);
-	//characterControlledLocalSubSystem = GetWorld()->GetGameInstance()->GetSubsystem<UTrenchesDefLocalPlayerSubsystem>();
 	FAISenseID viewID = UAISense::GetSenseID(UAISense_Sight::StaticClass());
 	UAISenseConfig_Sight *viewSense = Cast<UAISenseConfig_Sight>(AIPerception->GetSenseConfig(viewID));
 	viewSense->SightRadius = characterControlled->CharacterDataAsset->MaxDistanceVision;
@@ -102,8 +101,6 @@ bool ATrenchesDefenseAIController::OnFail() {
 
 
 void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
-	//si un enemy deja target par un allié ne pas lattaquer? ajouter boolean isAttacked si c'est ca
-
 	if (Target && !Target->IsDead) {
 		//in his vision
 		FVector actualLocation = characterControlled->GetActorLocation();
@@ -112,17 +109,14 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 		double dot = FVector::DotProduct(vectorBetweenBoth, characterControlled->GetActorForwardVector()) / vectorBetweenBoth.Size();
 		double degresACos = FMath::Acos(dot);
 
-		// Convertissez l'angle en degrés
+		// degree
 		double AngleInDegrees = FMath::RadiansToDegrees(degresACos);
 
-
+		//In its field of view.
 		if (AngleInDegrees <= characterControlled->CharacterDataAsset->DegreeOfVision / 2) {
-
-			;
 			if (Target->LifeComponent->TakeDamage(characterControlled->CharacterDataAsset->AttackDamage)) { //target is dead
 				if (!Target->IsDead) { //init the target to dead, give money to player
 					Target->IsDead = true;
-					//characterControlledLocalSubSystem->ChangeMoney(characterControlled->SoldierDataAsset->MoneyPerKill);
 					ATrenchesDefenseAIController* targetController = Cast<ATrenchesDefenseAIController>(Target->GetController());
 					if (targetController) {
 						targetController->GetBlackboardComponent()->SetValueAsBool("IsDead", true);
@@ -130,8 +124,6 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 					else {
 						UE_LOG(LogTemp, Warning, TEXT("targetController attack problem is null"));
 					}
-
-					//Give money
 					//If a soldier do the kill
 					if (!characterControlled->IsZombie) {
 						characterControlled->PlayerLocalSubsystem->GiveMoneyEvent.Broadcast(characterControlled->SoldierDataAsset->MoneyPerKill);
@@ -171,14 +163,6 @@ void ATrenchesDefenseAIController::ChangeTargetToAttack() {
 			if (target) { //not nullptr
 				TargetsInSightIndex = i;
 				GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
-				//FVector targetLocation = target->GetActorLocation();
-				//FVector characterLocation = characterControlled->GetActorLocation();
-				//if the target is in his sight (angle)
-
-				//if the target is in his sight (distance)
-				//if (FVector::DistSquared(characterLocation, targetLocation) <= characterControlled->CharacterDataAsset->MaxDistanceVision) {
-					//TargetsInSightIndex = i;
-				//}
 			}
 			else if (target && !target->IsDead) { //avoid bugs
 				TargetsInSight.RemoveAt(TargetsInSightIndex);
@@ -206,12 +190,9 @@ void ATrenchesDefenseAIController::Die() {
 	UnPossess();
 	characterControlled->Destroy();
 	Destroy();
-	//lifecomponent a 0, anim, destroy?
-	//IsDead = true;
 }
 
 void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) {
-	//faudra faire une verif de fin de stimulus quand souci réglé pour remove du tableau lacteur qui sort
 	ATrenchesDefenseCharacter* target = Cast<ATrenchesDefenseCharacter>(Actor);
 	if (target) {
 		if (characterControlled) {
@@ -245,14 +226,6 @@ void ATrenchesDefenseAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulu
 			}
 		}
 	}
-	
-	
-		
-	//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, Actor->GetName());
-	//NE PAS OUBLIE DE FAIRE UN IF(! SON TEAM COMPONENT) POUR QUE LE FONCTION FONCTIONNE PEUT IMPORTE LA TEAM zombie/soldat joueur1/joueur2 multi
-	//verif nbr zombie vu pour soldat depuis iaperception directement voir si nbr correspond soldierdataasset
-	//passer bool a true etc dans blackboard
-
 }
 
 void ATrenchesDefenseAIController::setWalkSpeed(int speed) {

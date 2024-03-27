@@ -19,6 +19,7 @@ public:
 
 	UTrenchesDefenseGameInstance();
 
+	//user settings
 	UPROPERTY(BlueprintReadWrite, category="SettingsManager")
 	USettingsManager* SettingsManager;
 

@@ -39,7 +39,7 @@ void ATimerWarmup::ChangeText() {
 	if (ActualTime < 0) {
 		ATrenchesDefenseGameMode *GM = Cast<ATrenchesDefenseGameMode>(GetWorld()->GetAuthGameMode());
 		if (GM) {
-			GM->StartWave();
+			GM->StartWave(); //start wave
 		}
 		GetWorldTimerManager().ClearTimer(TimerHandle);
 		InitTimer();

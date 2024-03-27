@@ -29,8 +29,11 @@ public:
 
 	ATrenchesDefenseGameMode();
 
+	//Actual wave
 	UPROPERTY(BlueprintReadOnly, category = "Game Info")
 	int Wave;
+
+	//count
 
 	UPROPERTY(BlueprintReadOnly, category = "Game Info")
 	int NumberOfZombieAllySide;
@@ -39,7 +42,7 @@ public:
 	int NumberOfSoldierAllySide;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Game Info")
-	int NumberOfZombieEnemySide; //si tag.enemy alors quand un meurt --, faire event dispatcher si ==0 => quand numberofzombiegermanyside = 0 && numberofzombiefranceside lancer end wave
+	int NumberOfZombieEnemySide;
 
 	UPROPERTY(BlueprintReadOnly, category = "Game Info")
 	int NumberOfSoldierEnemySide;
@@ -51,7 +54,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, category = "Gameplay Info")
 	bool InWave;
 
-	UPROPERTY(BlueprintReadOnly, category = "Game Info")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, category = "Game Info")
 	int MoneyToGiveBegining = 1000;
 
 	//Timer In Map
@@ -72,6 +75,7 @@ public:
 	UPROPERTY(BlueprintAssignable, category = "EndWave EventDispatcher")
 	FEndWave EndWaveEvent;
 
+	//used for general first speaking
 	bool firstWave = true;
 
 

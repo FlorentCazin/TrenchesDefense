@@ -15,11 +15,15 @@ public:
 	// Sets default values for this actor's properties
 	ATrencheToExplore();
 
+	//actual number of zombies inside the trenche
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int ActualNumberInsideTrenche = 0;
 
+	//cost
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int NumberMaxInsideTrenche;
+
+	//if mutli -> tag ally/ennemy
 
 protected:
 	// Called when the game starts or when spawned

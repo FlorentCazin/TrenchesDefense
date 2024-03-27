@@ -32,17 +32,18 @@ void ATrenchesDefenseGameMode::IncrWave() {
 
 void ATrenchesDefenseGameMode::StartWave() {
 
-	//trencheAISystem set new values
+	//trencheAISystem set new values, deep learning
 	AActor* trencheSelectorActor = UGameplayStatics::GetActorOfClass(GetWorld(), ATrenchesSelector::StaticClass());
 	if (trencheSelectorActor) {
 		ATrenchesSelector* trencheSelector = Cast<ATrenchesSelector>(trencheSelectorActor);
 		trencheSelector->SetTrenchesValues();
 	}
-
+	//call new wave
 	NewWaveEvent.Broadcast(Wave);
 	InWave = true;
 	//timer
 	timer->SetActorHiddenInGame(true);
+	//if multiple spawner (multi..)
 	for (auto &spawner: spawnerEnemies) {
 		ASpawnerEnemy* spawnerEnemy = Cast<ASpawnerEnemy>(spawner);
 		spawnerEnemy->StartSpawningEnemies();
@@ -75,6 +76,7 @@ void ATrenchesDefenseGameMode::EndWave() {
 	EndWaveEvent.Broadcast();
 }
 
+//called when a character die
 void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGameplayTag TeamTag) {
 	//Ally
 	if (TeamTag == UGameplayTagsManager::Get().RequestGameplayTag(FName("Team.Ally"))) {
@@ -97,8 +99,5 @@ void ATrenchesDefenseGameMode::UpdateGameModeCharactersInfos(bool IsZombie, FGam
 	//Next Wave
 	if (NumberOfZombieAllySide <= 0 && NumberOfZombieEnemySide <= 0) {
 		EndWave();
-		//faire parler general "bravo next wave"
-		//incr wave
-		//lancer event pour afficher argent
 	}
 }
