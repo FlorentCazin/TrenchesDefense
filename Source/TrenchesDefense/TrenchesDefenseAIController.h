@@ -80,4 +80,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void setWalkSpeed(int speed);
+
+	UFUNCTION(BlueprintCallable)
+	void debugTarget();
+
 };

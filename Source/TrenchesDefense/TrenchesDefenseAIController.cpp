@@ -16,6 +16,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "TrenchesDefenseGameMode.h"
 #include "TrenchesSelector.h"
+#include "Math/RandomStream.h"
 #include "AIController.h"
 
 ATrenchesDefenseAIController::ATrenchesDefenseAIController() {
@@ -101,7 +102,7 @@ bool ATrenchesDefenseAIController::OnFail() {
 
 
 void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
-	if (Target && !Target->IsDead) {
+	if (Target->IsValidLowLevel() && !Target->IsDead) {
 		//in his vision
 		FVector actualLocation = characterControlled->GetActorLocation();
 		FVector targetLocation = Target->GetActorLocation();
@@ -151,6 +152,7 @@ void ATrenchesDefenseAIController::Attack(ATrenchesDefenseCharacter* Target) {
 }
 
 void ATrenchesDefenseAIController::ChangeTargetToAttack() {
+	TargetsInSight.Shrink();
 	int targetsInSightArraySize = TargetsInSight.Num();
 	if (targetsInSightArraySize == 0) {
 		GetBlackboardComponent()->SetValueAsObject("TargetActor", nullptr);
@@ -164,12 +166,34 @@ void ATrenchesDefenseAIController::ChangeTargetToAttack() {
 				TargetsInSightIndex = i;
 				GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[TargetsInSightIndex]);
 			}
-			else if (target && !target->IsDead) { //avoid bugs
+			else if (target && target->IsDead) { //avoid bugs
 				TargetsInSight.RemoveAt(TargetsInSightIndex);
 				TargetsInSight.Shrink(); //reduce the array size
 			}
 		}
 	}
+}
+
+//problem -> crash
+void ATrenchesDefenseAIController::debugTarget() {
+	if (TargetsInSight.Num() >= 0) {
+		for (int i = 0; i < TargetsInSight.Num(); i++) {
+			if (TargetsInSight[i]->IsValidLowLevel() && !TargetsInSight[i]->IsDead) {
+				TargetsInSightIndex = i;
+				GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[i]);
+				break;
+			}
+		}
+	}
+
+	/*
+
+	if (TargetsInSight.Num() > 0) {
+		FRandomStream RandomStream;
+		int n = RandomStream.RandRange(0, TargetsInSight.Num() - 1);
+		TargetsInSightIndex = n;
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", TargetsInSight[n]);
+	}*/
 }
 
 void ATrenchesDefenseAIController::Die() {
